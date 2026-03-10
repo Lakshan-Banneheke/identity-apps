@@ -2465,6 +2465,10 @@ export interface ConsoleNS {
                 subTitle: string;
             };
             applications: {
+                adminNotice: {
+                    title: string;
+                    description: string;
+                };
                 title: string;
                 subTitle: string;
                 alternateSubTitle: string;

@@ -2598,6 +2598,12 @@ export const console: ConsoleNS = {
                 title: "Create a New Application"
             },
             applications: {
+                adminNotice: {
+                    description: "You've exceeded the Free tier application limit, but all your applications " +
+                        "remain active for the duration of your trial. Upgrade your plan to keep them running " +
+                        "after your trial ends.",
+                    title: "Free Tier Application Limit Exceeded"
+                },
                 alternateSubTitle: "Manage your applications and customize login flows.",
                 subTitle: "Create and manage your applications and configure sign-in.",
                 title: "Applications"

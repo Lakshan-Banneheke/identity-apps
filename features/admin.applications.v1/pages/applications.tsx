@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import { GearIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, Show } from "@wso2is/access-control";
 import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
@@ -29,6 +30,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import AdminNotice from "@wso2is/admin.extensions.v1/configs/components/admin-notice/admin-notice";
 import { OrganizationFeatureDictionaryKeys, OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -60,7 +62,7 @@ import React, {
     useEffect,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
@@ -132,6 +134,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const applicationDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.applications?.disabledFeatures;
     });
+    const isAdminNoticeEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.ui?.adminNotice?.enabled;
+    });
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
@@ -147,6 +152,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ strongAuth, _setStrongAuth ] = useState<boolean>(undefined);
     const [ filteredApplicationList, setFilteredApplicationList ] = useState<ApplicationListInterface>(null);
     const [ myAccountAppId, setMyAccountAppId ] = useState<string>(null);
+    const [ adminNoticeEnabled, setAdminNoticeEnabled ] = useState<boolean>(isAdminNoticeEnabled);
 
     const { organizationType } = useGetCurrentOrganizationType();
 
@@ -656,6 +662,28 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
                 data-testid={ `${ testId }-page-layout` }
             >
+                { isAdminNoticeEnabled && adminNoticeEnabled && (
+                    <Box sx={ { mb: 2 } }>
+                        <AdminNotice
+                            data-componentid="applications-admin-notice"
+                            title={ (
+                                <Trans i18nKey={ "console:develop.pages.applications.adminNotice.title" }>
+                                    Free Tier Application Limit Exceeded
+                                </Trans>
+                            ) }
+                            description={ (
+                                <Trans i18nKey={ "console:develop.pages.applications.adminNotice.description" }>
+                                    You&apos;ve exceeded the Free tier application limit, but all your applications
+                                    remain active for the duration of your trial. Upgrade your plan to keep them active after your trial ends.
+                                </Trans>
+                            ) }
+                            instructions={ [] }
+                            showCloseButton={ false }
+                            titleVariant="h6"
+                            setDisplayBanner={ setAdminNoticeEnabled }
+                        />
+                    </Box>
+                ) }
                 {
                     !isMyAccountApplicationDataFetchRequestLoading
                         && myAccountApplicationData?.applications?.length !== 0

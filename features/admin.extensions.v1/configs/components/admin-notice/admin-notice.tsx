@@ -51,6 +51,14 @@ export interface AdminNoticeProps extends IdentifiableComponentInterface {
      */
     moreDetails?: ReactElement;
     /**
+     * Whether to show the close (x) button.
+     */
+    showCloseButton?: boolean;
+    /**
+     * Typography variant for the title.
+     */
+    titleVariant?: string;
+    /**
      * Function to set the display state of the banner.
      */
     setDisplayBanner?: (display: boolean) => void;
@@ -69,11 +77,15 @@ const AdminNotice: FunctionComponent<AdminNoticeProps> = (props: AdminNoticeProp
         description,
         instructions,
         moreDetails,
+        showCloseButton = true,
+        titleVariant = "h5",
         setDisplayBanner,
         [ "data-componentid" ]: componentId
     } = props;
 
     const [ viewDetails, setViewDetails ] = useState<boolean>(true);
+
+    const hasDetails: boolean = instructions.length > 0 || !!moreDetails;
 
     /**
      * Function to resolve the details of the banner view.
@@ -119,6 +131,8 @@ const AdminNotice: FunctionComponent<AdminNoticeProps> = (props: AdminNoticeProp
         );
     };
 
+    const showActionBox: boolean = hasDetails || showCloseButton;
+
     const classes: any = classNames( { "admin-data-alert-expanded-view" : viewDetails } );
 
     return (
@@ -127,57 +141,63 @@ const AdminNotice: FunctionComponent<AdminNoticeProps> = (props: AdminNoticeProp
             severity="warning"
             sx={ {
                 boxSizing: "border-box",
-                paddingRight: "150px",
+                paddingRight: showActionBox ? "150px" : undefined,
                 position: "relative",
                 width: "100%"
             } }
         >
-            <AlertTitle className="alert-title" variant="h5">
+            <AlertTitle className="alert-title" variant={ titleVariant as any }>
                 <strong>{ title }</strong>
             </AlertTitle>
 
-            <Box
-                sx={ {
-                    alignItems: "center",
-                    backgroundColor: "inherit",
-                    columnGap: 1,
-                    display: "flex",
-                    position: "absolute",
-                    right: 8,
-                    top: 8,
-                    width: 140,
-                    zIndex: 10
-                } }
-            >
-                <Button
-                    className="banner-view-hide-details"
-                    data-componentid={ componentId + "-view-details-button" }
-                    size="small"
-                    onClick={ () => setViewDetails(!viewDetails) }
+            { showActionBox && (
+                <Box
                     sx={ {
-                        minWidth: 110,
-                        whiteSpace: "nowrap"
+                        alignItems: "center",
+                        backgroundColor: "inherit",
+                        columnGap: 1,
+                        display: "flex",
+                        position: "absolute",
+                        right: 8,
+                        top: 8,
+                        width: 140,
+                        zIndex: 10
                     } }
                 >
-                    { viewDetails ? "Hide Details" : "View Details" }
-                </Button>
+                    { hasDetails && (
+                        <Button
+                            className="banner-view-hide-details"
+                            data-componentid={ componentId + "-view-details-button" }
+                            size="small"
+                            onClick={ () => setViewDetails(!viewDetails) }
+                            sx={ {
+                                minWidth: 110,
+                                whiteSpace: "nowrap"
+                            } }
+                        >
+                            { viewDetails ? "Hide Details" : "View Details" }
+                        </Button>
+                    ) }
 
-                <Icon
-                    link
-                    onClick={ () => setDisplayBanner(false) }
-                    size="small"
-                    color="grey"
-                    name="close"
-                    data-componentid="close-btn"
-                    sx={ { cursor: "pointer" } }
-                />
-            </Box>
+                    { showCloseButton && (
+                        <Icon
+                            link
+                            onClick={ () => setDisplayBanner(false) }
+                            size="small"
+                            color="grey"
+                            name="close"
+                            data-componentid="close-btn"
+                            sx={ { cursor: "pointer" } }
+                        />
+                    ) }
+                </Box>
+            ) }
 
             <Typography variant="body1" sx={ { mt: 1 } }>
                 { description }
             </Typography>
 
-            { viewDetails && resolveBannerViewDetails() }
+            { hasDetails && viewDetails && resolveBannerViewDetails() }
         </Alert>
 
     );
