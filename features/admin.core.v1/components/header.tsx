@@ -61,6 +61,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffec
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import FeaturePreviewModal from "./modals/feature-preview-modal";
+import StartTrialModal from "./modals/start-trial-modal";
 import { ReactComponent as PreviewFeaturesIcon } from "../../themes/default/assets/images/icons/flask-icon.svg";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
@@ -162,6 +163,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         setAnchorHelpMenu(null);
     };
 
+    const [ showStartTrialModal, setShowStartTrialModal ] = useState<boolean>(false);
     const [ billingPortalURL, setBillingPortalURL ] = useState<string>(undefined);
     const [ upgradeButtonURL, setUpgradeButtonURL ] = useState<string>(undefined);
     const [ openLanguageSwitcher, setOpenLanguageSwitcher ] = useState<boolean>(
@@ -438,6 +440,24 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                     ) }
                 </Menu>
             </>
+        ),
+        tierName === TenantTier.FREE &&
+            !isPrivilegedUser &&
+            window["AppUtils"].getConfig().extensions.upgradeButtonEnabled && (
+            <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                <Button
+                    className="header-upgrade-btn"
+                    color="secondary"
+                    variant="outlined"
+                    startIcon={ <DiamondIcon /> }
+                    onClick={ () => setShowStartTrialModal(true) }
+                    data-componentid="start-trial-button"
+                >
+                    <span className="header-upgrade-btn-text">
+                        Start Trial
+                    </span>
+                </Button>
+            </Show>
         ),
         tierName === TenantTier.FREE &&
             billingPortalURL &&
@@ -729,6 +749,16 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
             <FeaturePreviewModal
                 open={ showPreviewFeaturesModal }
                 onClose={ () => setShowPreviewFeaturesModal(false) }
+            />
+            <StartTrialModal
+                open={ showStartTrialModal }
+                onClose={ () => setShowStartTrialModal(false) }
+                onStartTrial={ () => {
+                    if (upgradeButtonURL) {
+                        window.open(upgradeButtonURL, "_blank", "noopener");
+                    }
+                } }
+                data-componentid="header-start-trial-modal"
             />
         </>
     );
