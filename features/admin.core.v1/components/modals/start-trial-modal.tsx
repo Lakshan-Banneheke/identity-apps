@@ -16,10 +16,15 @@
  * under the License.
  */
 
+import { BrandingWatermark, Security, Speed, SupportAgent } from "@mui/icons-material";
+import Box from "@oxygen-ui/react/Box";
+import Paper from "@oxygen-ui/react/Paper";
+import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Heading, PrimaryButton, Button as SemanticButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal } from "semantic-ui-react";
+import { Grid, Message, Modal } from "semantic-ui-react";
 import "./start-trial-modal.scss";
 
 /**
@@ -35,40 +40,33 @@ interface StartTrialModalPropsInterface extends IdentifiableComponentInterface {
  * Feature item interface for the trial features list.
  */
 interface TrialFeatureItemInterface {
+    icon: ReactElement;
     name: string;
     description: string;
 }
-
-/**
- * Check icon SVG component for the feature list items.
- *
- * @returns SVG ReactElement for the check icon.
- */
-const CheckIcon = (): ReactElement => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-        strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="20 6 9 17 4 12" />
-    </svg>
-);
 
 /**
  * Trial features to display in the modal.
  */
 const TRIAL_FEATURES: TrialFeatureItemInterface[] = [
     {
-        description: "Configure conditional scripts and adaptive flows",
+        description: "Configure conditional scripts and adaptive authentication flows.",
+        icon: <Security fontSize="large" color="inherit" />,
         name: "Advanced Authentication"
     },
     {
-        description: "Customize login pages, emails, and branding",
+        description: "Customize login pages, emails, and organization branding.",
+        icon: <BrandingWatermark fontSize="large" color="inherit" />,
         name: "Full Branding Suite"
     },
     {
-        description: "Priority support with dedicated response SLAs",
+        description: "Priority support with dedicated response SLAs.",
+        icon: <SupportAgent fontSize="large" color="inherit" />,
         name: "Premium Support"
     },
     {
-        description: "Expanded MAU limits and API rate limits",
+        description: "Expanded MAU limits and API rate limits.",
+        icon: <Speed fontSize="large" color="inherit" />,
         name: "Higher Usage Limits"
     }
 ];
@@ -101,71 +99,115 @@ const StartTrialModal: FunctionComponent<StartTrialModalPropsInterface> = ({
     return (
         <Modal
             open={ open }
-            onClose={ onClose }
-            className="start-trial-modal"
-            size="small"
+            className="wizard action-create-wizard"
             dimmer="blurring"
-            closeOnDimmerClick
+            size="small"
+            onClose={ onClose }
+            closeOnDimmerClick={ false }
             closeOnEscape
             data-componentid={ componentId }
         >
-            <div className="start-trial-modal-header">
-                <div className="start-trial-modal-badge">
-                    <span className="badge-dot" />
-                    30-Day Free Trial
-                </div>
-                <h2 className="start-trial-modal-title">
-                    Unlock the Full Power of Asgardeo
-                </h2>
-                <p className="start-trial-modal-subtitle">
+            <Modal.Header className="wizard-header">
+                Start Your 30-Day Free Trial
+                <Heading as="h6">
                     Experience enterprise-grade identity management with all premium
                     features included. No credit card required.
-                </p>
-            </div>
-
-            <Modal.Content className="start-trial-modal-body">
-                <div className="start-trial-features-label">
-                    What you get
-                </div>
-                <div className="start-trial-features-list">
-                    { TRIAL_FEATURES.map((feature: TrialFeatureItemInterface) => (
-                        <div
-                            key={ feature.name }
-                            className="start-trial-feature-item"
-                            data-componentid={ `${componentId}-feature-${feature.name}` }
-                        >
-                            <div className="feature-check">
-                                <CheckIcon />
-                            </div>
-                            <div className="feature-text">
-                                <div className="feature-name">{ feature.name }</div>
-                                <div className="feature-desc">{ feature.description }</div>
-                            </div>
-                        </div>
-                    )) }
-                </div>
-                <div className="start-trial-note">
-                    <span className="note-icon">&#9432;</span>
+                </Heading>
+            </Modal.Header>
+            <Modal.Content className="content-container" scrolling>
+                <Message info>
                     Your current configuration and data will be preserved.
                     Downgrade anytime before the trial ends.
-                </div>
-            </Modal.Content>
+                </Message>
 
-            <Modal.Actions className="start-trial-modal-actions">
-                <button
-                    className="start-trial-cancel"
-                    onClick={ onClose }
-                    data-componentid={ `${componentId}-cancel-button` }
-                >
-                    { t("common:cancel") }
-                </button>
-                <button
-                    className="start-trial-cta"
-                    onClick={ handleStartTrial }
-                    data-componentid={ `${componentId}-start-button` }
-                >
-                    Start My Free Trial
-                </button>
+                <Box display="flex" flexDirection="column" gap={ 3 } width="100%">
+                    <Box display="flex" gap={ 3 }>
+                        { TRIAL_FEATURES.slice(0, 2).map((feature: TrialFeatureItemInterface) => (
+                            <Paper
+                                key={ feature.name }
+                                elevation={ 3 }
+                                sx={ {
+                                    alignItems: "flex-start",
+                                    borderLeft: 4,
+                                    borderLeftColor: "primary.main",
+                                    borderLeftStyle: "solid",
+                                    display: "flex",
+                                    flex: 1,
+                                    flexDirection: "column",
+                                    gap: 1.5,
+                                    p: 2
+                                } }
+                                data-componentid={ `${componentId}-feature-${feature.name}` }
+                            >
+                                <Box color="primary.main" mb={ 1 }>
+                                    { feature.icon }
+                                </Box>
+                                <Typography variant="subtitle1" fontWeight={ 600 }>
+                                    { feature.name }
+                                </Typography>
+                                <Typography variant="body2">
+                                    { feature.description }
+                                </Typography>
+                            </Paper>
+                        )) }
+                    </Box>
+                    <Box display="flex" gap={ 3 }>
+                        { TRIAL_FEATURES.slice(2, 4).map((feature: TrialFeatureItemInterface) => (
+                            <Paper
+                                key={ feature.name }
+                                elevation={ 3 }
+                                sx={ {
+                                    alignItems: "flex-start",
+                                    borderLeft: 4,
+                                    borderLeftColor: "primary.main",
+                                    borderLeftStyle: "solid",
+                                    display: "flex",
+                                    flex: 1,
+                                    flexDirection: "column",
+                                    gap: 1.5,
+                                    p: 2
+                                } }
+                                data-componentid={ `${componentId}-feature-${feature.name}` }
+                            >
+                                <Box color="primary.main" mb={ 1 }>
+                                    { feature.icon }
+                                </Box>
+                                <Typography variant="subtitle1" fontWeight={ 600 }>
+                                    { feature.name }
+                                </Typography>
+                                <Typography variant="body2">
+                                    { feature.description }
+                                </Typography>
+                            </Paper>
+                        )) }
+                    </Box>
+                </Box>
+            </Modal.Content>
+            <Modal.Actions>
+                <Grid>
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            <SemanticButton
+                                className="link-button"
+                                basic
+                                primary
+                                floated="left"
+                                onClick={ onClose }
+                                data-componentid={ `${componentId}-cancel-button` }
+                            >
+                                { t("common:cancel") }
+                            </SemanticButton>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            <PrimaryButton
+                                onClick={ handleStartTrial }
+                                data-componentid={ `${componentId}-start-button` }
+                            >
+                                Start My Free Trial
+                            </PrimaryButton>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </Modal.Actions>
         </Modal>
     );
