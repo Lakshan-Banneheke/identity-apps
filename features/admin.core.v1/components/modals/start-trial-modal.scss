@@ -27,17 +27,14 @@ $trial-modal-check-color: #2E7D32;
 
 .start-trial-modal {
     &.ui.modal {
-        border-radius: 12px;
+        border-radius: 8px;
         overflow: hidden;
         max-width: 520px;
-        box-shadow:
-            0 24px 80px rgba(0, 0, 0, 0.12),
-            0 8px 24px rgba(0, 0, 0, 0.08);
     }
 
     .start-trial-modal-header {
         background: $trial-modal-accent-gradient;
-        padding: 32px 36px 28px;
+        padding: 32px 30px 28px;
         border-bottom: none;
         position: relative;
         overflow: hidden;
@@ -110,7 +107,7 @@ $trial-modal-check-color: #2E7D32;
     }
 
     .start-trial-modal-body {
-        padding: 28px 36px 20px !important;
+        padding: 28px 30px 20px !important;
         background: #FFFFFF;
 
         .start-trial-features-label {
@@ -138,7 +135,7 @@ $trial-modal-check-color: #2E7D32;
                     width: 22px;
                     height: 22px;
                     background: rgba(46, 125, 50, 0.08);
-                    border-radius: 6px;
+                    border-radius: 8px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -189,52 +186,26 @@ $trial-modal-check-color: #2E7D32;
     }
 
     .start-trial-modal-actions {
-        padding: 16px 36px 28px !important;
+        padding: 14px 30px 28px !important;
         background: #FFFFFF;
         border-top: none;
         display: flex;
-        gap: 12px;
+        justify-content: center;
 
         .start-trial-cta {
-            flex: 1;
-            background: $trial-modal-accent-gradient;
-            color: #FFFFFF;
-            font-weight: 700;
-            font-size: 15px;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: center;
-            letter-spacing: 0.2px;
+            &.ui.button {
+                background: $trial-modal-accent-gradient;
+                border: none;
+                color: #FFFFFF;
+                width: auto;
+                padding: 10px 40px;
+                font-weight: 700;
+                box-shadow: 0 2px 8px rgba(221, 182, 56, 0.3);
 
-            &:hover {
-                filter: brightness(1.08);
-                transform: translateY(-1px);
-                box-shadow: 0 4px 16px rgba(221, 182, 56, 0.35);
-            }
-
-            &:active {
-                transform: translateY(0);
-            }
-        }
-
-        .start-trial-cancel {
-            background: transparent;
-            color: $trial-modal-text-secondary;
-            font-weight: 500;
-            font-size: 14px;
-            padding: 12px 20px;
-            border: 1px solid #E0E0E0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.15s ease;
-
-            &:hover {
-                background: #F5F5F5;
-                border-color: #D0D0D0;
-                color: $trial-modal-text-primary;
+                &:hover {
+                    filter: brightness(1.1);
+                    box-shadow: 0 4px 16px rgba(221, 182, 56, 0.45);
+                }
             }
         }
     }

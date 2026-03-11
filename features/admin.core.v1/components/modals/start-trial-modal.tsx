@@ -18,8 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { useTranslation } from "react-i18next";
-import { Modal } from "semantic-ui-react";
+import { Button, Modal } from "semantic-ui-react";
 import "./start-trial-modal.scss";
 
 /**
@@ -88,8 +87,6 @@ const StartTrialModal: FunctionComponent<StartTrialModalPropsInterface> = ({
     open
 }: StartTrialModalPropsInterface): ReactElement => {
 
-    const { t } = useTranslation();
-
     /**
      * Handles the start trial CTA click.
      */
@@ -152,20 +149,13 @@ const StartTrialModal: FunctionComponent<StartTrialModalPropsInterface> = ({
             </Modal.Content>
 
             <Modal.Actions className="start-trial-modal-actions">
-                <button
-                    className="start-trial-cancel"
-                    onClick={ onClose }
-                    data-componentid={ `${componentId}-cancel-button` }
-                >
-                    { t("common:cancel") }
-                </button>
-                <button
+                <Button
                     className="start-trial-cta"
                     onClick={ handleStartTrial }
                     data-componentid={ `${componentId}-start-button` }
                 >
-                    Start My Free Trial
-                </button>
+                    Let&apos;s go
+                </Button>
             </Modal.Actions>
         </Modal>
     );
