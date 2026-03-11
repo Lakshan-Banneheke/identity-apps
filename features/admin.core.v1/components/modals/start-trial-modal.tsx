@@ -111,10 +111,9 @@ const StartTrialModal: FunctionComponent<StartTrialModalPropsInterface> = ({
                     <span className="badge-dot" />
                     30-Day Free Trial
                 </div>
-                <h2 className="start-trial-modal-title">Unlock the Full Power of Asgardeo</h2>
+                <h2 className="start-trial-modal-title">Premium capabilities unlocked!</h2>
                 <p className="start-trial-modal-subtitle">
-                    Experience enterprise-grade identity management with all premium features included. No credit card
-                    required.
+                    Get started with more features and higher usage limits on your organization for 30 days. No credit card required.
                 </p>
             </div>
 

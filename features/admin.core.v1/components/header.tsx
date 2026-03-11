@@ -754,9 +754,6 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 open={ showStartTrialModal }
                 onClose={ () => setShowStartTrialModal(false) }
                 onStartTrial={ () => {
-                    if (upgradeButtonURL) {
-                        window.open(upgradeButtonURL, "_blank", "noopener");
-                    }
                 } }
                 data-componentid="header-start-trial-modal"
             />
