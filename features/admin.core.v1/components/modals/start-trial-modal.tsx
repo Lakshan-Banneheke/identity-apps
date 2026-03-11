@@ -44,8 +44,14 @@ interface TrialFeatureItemInterface {
  * @returns SVG ReactElement for the check icon.
  */
 const CheckIcon = (): ReactElement => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-        strokeLinecap="round" strokeLinejoin="round">
+    <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+    >
         <polyline points="20 6 9 17 4 12" />
     </svg>
 );
@@ -55,21 +61,17 @@ const CheckIcon = (): ReactElement => (
  */
 const TRIAL_FEATURES: TrialFeatureItemInterface[] = [
     {
-        description: "Configure conditional scripts and adaptive flows",
-        name: "Advanced Authentication"
+        description: "Unlock advanced authentication, branding, and more",
+        name: "Access to Premium Features",
     },
     {
-        description: "Customize login pages, emails, and branding",
-        name: "Full Branding Suite"
+        description: "Expanded monthly active user and machine-to-machine token limits",
+        name: "Higher Usage Limits",
     },
     {
-        description: "Priority support with dedicated response SLAs",
-        name: "Premium Support"
+        description: "Increased quotas for applications, social idp connections, and more",
+        name: "Higher Resource Quotas",
     },
-    {
-        description: "Expanded MAU limits and API rate limits",
-        name: "Higher Usage Limits"
-    }
 ];
 
 /**
@@ -84,9 +86,8 @@ const StartTrialModal: FunctionComponent<StartTrialModalPropsInterface> = ({
     "data-componentid": componentId = "start-trial-modal",
     onClose,
     onStartTrial,
-    open
+    open,
 }: StartTrialModalPropsInterface): ReactElement => {
-
     /**
      * Handles the start trial CTA click.
      */
@@ -97,62 +98,52 @@ const StartTrialModal: FunctionComponent<StartTrialModalPropsInterface> = ({
 
     return (
         <Modal
-            open={ open }
-            onClose={ onClose }
+            open={open}
             className="start-trial-modal"
             size="small"
             dimmer="blurring"
-            closeOnDimmerClick
-            closeOnEscape
-            data-componentid={ componentId }
+            closeOnDimmerClick={false}
+            closeOnEscape={false}
+            data-componentid={componentId}
         >
             <div className="start-trial-modal-header">
                 <div className="start-trial-modal-badge">
                     <span className="badge-dot" />
                     30-Day Free Trial
                 </div>
-                <h2 className="start-trial-modal-title">
-                    Unlock the Full Power of Asgardeo
-                </h2>
+                <h2 className="start-trial-modal-title">Unlock the Full Power of Asgardeo</h2>
                 <p className="start-trial-modal-subtitle">
-                    Experience enterprise-grade identity management with all premium
-                    features included. No credit card required.
+                    Experience enterprise-grade identity management with all premium features included. No credit card
+                    required.
                 </p>
             </div>
 
             <Modal.Content className="start-trial-modal-body">
-                <div className="start-trial-features-label">
-                    What you get
-                </div>
+                <div className="start-trial-features-label">What you get</div>
                 <div className="start-trial-features-list">
-                    { TRIAL_FEATURES.map((feature: TrialFeatureItemInterface) => (
+                    {TRIAL_FEATURES.map((feature: TrialFeatureItemInterface) => (
                         <div
-                            key={ feature.name }
+                            key={feature.name}
                             className="start-trial-feature-item"
-                            data-componentid={ `${componentId}-feature-${feature.name}` }
+                            data-componentid={`${componentId}-feature-${feature.name}`}
                         >
                             <div className="feature-check">
                                 <CheckIcon />
                             </div>
                             <div className="feature-text">
-                                <div className="feature-name">{ feature.name }</div>
-                                <div className="feature-desc">{ feature.description }</div>
+                                <div className="feature-name">{feature.name}</div>
+                                <div className="feature-desc">{feature.description}</div>
                             </div>
                         </div>
-                    )) }
-                </div>
-                <div className="start-trial-note">
-                    <span className="note-icon">&#9432;</span>
-                    Your current configuration and data will be preserved.
-                    Downgrade anytime before the trial ends.
+                    ))}
                 </div>
             </Modal.Content>
 
             <Modal.Actions className="start-trial-modal-actions">
                 <Button
                     className="start-trial-cta"
-                    onClick={ handleStartTrial }
-                    data-componentid={ `${componentId}-start-button` }
+                    onClick={handleStartTrial}
+                    data-componentid={`${componentId}-start-button`}
                 >
                     Let&apos;s go
                 </Button>
