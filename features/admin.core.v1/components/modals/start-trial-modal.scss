@@ -16,18 +16,9 @@
  * under the License.
  */
 
-$trial-modal-accent: #e0b834;
-$trial-modal-accent-hover: #fbcb30;
-$trial-modal-accent-gradient: linear-gradient(135deg, #ddb638 0%, #cba837 60%, #bd9b2c 100%);
-$trial-modal-surface: #fafaf8;
-$trial-modal-border: #e8e4d8;
-$trial-modal-text-primary: #1a1a1a;
-$trial-modal-text-secondary: #5c5c5c;
-$trial-modal-check-color: #2e7d32;
-
 .start-trial-modal {
     &.ui.modal {
-        border-radius: 12px;
+        border-radius: var(--oxygen-shape-borderRadius);
         overflow: hidden;
         max-width: 520px;
         box-shadow:
@@ -37,12 +28,12 @@ $trial-modal-check-color: #2e7d32;
     }
 
     .start-trial-modal-header {
-        background: $trial-modal-accent-gradient;
+        background: linear-gradient(88deg, var(--oxygen-palette-gradients-primary-stop1) -3.25%, var(--oxygen-palette-gradients-primary-stop2) 102.62%);
         padding: 32px 30px 28px;
         border-bottom: none;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 4px 20px rgba(200, 160, 40, 0.12);
+        box-shadow: 0 4px 20px rgba(var(--oxygen-palette-primary-mainChannel) / 0.12);
 
         &::before {
             content: "";
@@ -77,7 +68,7 @@ $trial-modal-check-color: #2e7d32;
             padding: 4px 14px;
             font-size: 12px;
             font-weight: 600;
-            color: #ffffff;
+            color: var(--oxygen-palette-common-white);
             letter-spacing: 0.5px;
             text-transform: uppercase;
             margin-bottom: 16px;
@@ -85,7 +76,7 @@ $trial-modal-check-color: #2e7d32;
             .badge-dot {
                 width: 6px;
                 height: 6px;
-                background: #ffffff;
+                background: var(--oxygen-palette-common-white);
                 border-radius: 50%;
                 animation: pulse-dot 3s ease-in-out infinite;
             }
@@ -94,7 +85,7 @@ $trial-modal-check-color: #2e7d32;
         .start-trial-modal-title {
             font-size: 24px;
             font-weight: 700;
-            color: #ffffff;
+            color: var(--oxygen-palette-common-white);
             line-height: 1.3;
             margin: 0 0 8px;
             position: relative;
@@ -104,7 +95,7 @@ $trial-modal-check-color: #2e7d32;
 
         .start-trial-modal-subtitle {
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(var(--oxygen-palette-common-whiteChannel) / 0.85);
             line-height: 1.5;
             margin: 0;
             position: relative;
@@ -114,12 +105,12 @@ $trial-modal-check-color: #2e7d32;
 
     .start-trial-modal-body {
         padding: 28px 30px 20px !important;
-        background: #fffef9;
+        background: var(--oxygen-palette-background-paper);
 
         .start-trial-features-label {
             font-size: 12px;
             font-weight: 700;
-            color: $trial-modal-text-secondary;
+            color: var(--oxygen-palette-text-secondary);
             text-transform: uppercase;
             letter-spacing: 1.2px;
             margin-bottom: 22px;
@@ -140,7 +131,7 @@ $trial-modal-check-color: #2e7d32;
                     flex-shrink: 0;
                     width: 26px;
                     height: 26px;
-                    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+                    background: linear-gradient(135deg, rgba(var(--oxygen-palette-success-mainChannel) / 0.12), rgba(var(--oxygen-palette-success-mainChannel) / 0.2));
                     border-radius: 50%;
                     display: flex;
                     align-items: center;
@@ -150,7 +141,7 @@ $trial-modal-check-color: #2e7d32;
                     svg {
                         width: 14px;
                         height: 14px;
-                        color: $trial-modal-check-color;
+                        color: var(--oxygen-palette-success-main);
                     }
                 }
 
@@ -158,13 +149,13 @@ $trial-modal-check-color: #2e7d32;
                     .feature-name {
                         font-size: 14px;
                         font-weight: 600;
-                        color: $trial-modal-text-primary;
+                        color: var(--oxygen-palette-text-primary);
                         line-height: 1.4;
                     }
 
                     .feature-desc {
                         font-size: 13px;
-                        color: $trial-modal-text-secondary;
+                        color: var(--oxygen-palette-text-secondary);
                         line-height: 1.4;
                         margin-top: 2px;
                     }
@@ -176,12 +167,12 @@ $trial-modal-check-color: #2e7d32;
             display: flex;
             align-items: center;
             gap: 10px;
-            background: $trial-modal-surface;
-            border: 1px solid $trial-modal-border;
+            background: var(--oxygen-palette-background-paper);
+            border: 1px solid var(--oxygen-palette-divider);
             border-radius: 8px;
             padding: 12px 16px;
             font-size: 13px;
-            color: $trial-modal-text-secondary;
+            color: var(--oxygen-palette-text-secondary);
             line-height: 1.4;
 
             .note-icon {
@@ -193,35 +184,14 @@ $trial-modal-check-color: #2e7d32;
 
     .start-trial-modal-actions {
         padding: 21px 30px !important;
-        background: #fffef9;
+        background: var(--oxygen-palette-background-paper);
         border-top: none;
         display: flex;
         justify-content: center;
         align-items: center;
 
-        .start-trial-cta {
-            &.ui.button {
-                background: $trial-modal-accent-gradient;
-                border: none;
-                color: #ffffff;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: auto;
-                padding: 12px 48px;
-                font-size: 15px;
-                font-weight: 700;
-                line-height: 1;
-                letter-spacing: 0.3px;
-                border-radius: 8px;
-                box-shadow: 0 4px 14px rgba(200, 160, 40, 0.3);
-                transition: all 0.2s ease;
-
-                &:hover {
-                    filter: brightness(1.1);
-                    box-shadow: 0 6px 20px rgba(200, 160, 40, 0.45);
-                }
-            }
+        .ui.primary.button {
+            width: 30%;
         }
     }
 }

@@ -17,8 +17,9 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Button, Modal } from "semantic-ui-react";
+import { Modal } from "semantic-ui-react";
 import "./start-trial-modal.scss";
 
 /**
@@ -139,13 +140,12 @@ const StartTrialModal: FunctionComponent<StartTrialModalPropsInterface> = ({
             </Modal.Content>
 
             <Modal.Actions className="start-trial-modal-actions">
-                <Button
-                    className="start-trial-cta"
+                <PrimaryButton
                     onClick={handleStartTrial}
                     data-componentid={`${componentId}-start-button`}
                 >
                     Let&apos;s go
-                </Button>
+                </PrimaryButton>
             </Modal.Actions>
         </Modal>
     );
