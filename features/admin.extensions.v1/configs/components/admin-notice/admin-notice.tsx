@@ -138,7 +138,7 @@ const AdminNotice: FunctionComponent<AdminNoticeProps> = (props: AdminNoticeProp
     return (
         <Alert
             className={ classes }
-            severity="warning"
+            severity="error"
             sx={ {
                 boxSizing: "border-box",
                 paddingRight: showActionBox ? "150px" : undefined,

@@ -79,7 +79,7 @@ export interface ConsoleNS {
                 privacyPolicy: string;
                 cookiePolicy: string;
                 termsOfService: string;
-            }
+            };
         };
         header: {
             appSwitch: {
@@ -128,7 +128,7 @@ export interface ConsoleNS {
             actions: {
                 subscribe: string;
                 decline: string;
-            },
+            };
             notifications: {
                 errors: {
                     fetch: {
@@ -251,7 +251,7 @@ export interface ConsoleNS {
                         3: string;
                         4: string;
                         5: string;
-                    }
+                    };
                 };
                 integrateApps: {
                     actions: {
@@ -305,8 +305,8 @@ export interface ConsoleNS {
                             message: string;
                             description: string;
                         };
-                    }
-                }
+                    };
+                };
             };
         };
         sidePanel: {
@@ -1529,7 +1529,7 @@ export interface ConsoleNS {
                             enableProgressiveEnrollment: {
                                 description: string;
                                 heading: string;
-                            }
+                            };
                             heading: string;
                             name: {
                                 idpDescription: string;
@@ -1540,7 +1540,7 @@ export interface ConsoleNS {
                                 appDescription: string;
                                 heading: string;
                             };
-                        }
+                        };
                     };
                     enterprise: {
                         addWizard: {
@@ -2468,6 +2468,10 @@ export interface ConsoleNS {
                 adminNotice: {
                     title: string;
                     description: string;
+                    instructions: {
+                        0: string;
+                        1: string;
+                    };
                 };
                 title: string;
                 subTitle: string;
@@ -6425,7 +6429,7 @@ export interface ConsoleNS {
                         diagnostics: {
                             name: string;
                             description: string;
-                        }
+                        };
                     };
                     fields: {
                         logTypes: {
@@ -6477,11 +6481,11 @@ export interface ConsoleNS {
                                 types: {
                                     none: {
                                         name: string;
-                                    },
+                                    };
                                     basic: {
                                         name: string;
-                                    }
-                                },
+                                    };
+                                };
                                 authenticationType: {
                                     label: string;
                                     placeholder: string;
@@ -6489,23 +6493,23 @@ export interface ConsoleNS {
                                         create: string;
                                         update: string;
                                     };
-                                },
+                                };
                                 buttons: {
                                     changeAuthentication: string;
-                                }
+                                };
                                 serverUsername: {
                                     label: string;
                                     placeholder: string;
                                     error: {
                                         required: string;
-                                    }
+                                    };
                                 };
                                 serverPassword: {
                                     label: string;
                                     placeholder: string;
                                     error: {
                                         required: string;
-                                    }
+                                    };
                                 };
                             };
                             sslConfig: {
@@ -6530,28 +6534,28 @@ export interface ConsoleNS {
                                     placeholder: string;
                                     error: {
                                         required: string;
-                                    }
+                                    };
                                 };
                                 keystorePassword: {
                                     label: string;
                                     placeholder: string;
                                     error: {
                                         required: string;
-                                    }
+                                    };
                                 };
                                 truststorePath: {
                                     label: string;
                                     placeholder: string;
                                     error: {
                                         required: string;
-                                    }
+                                    };
                                 };
                                 truststorePassword: {
                                     label: string;
                                     placeholder: string;
                                     error: {
                                         required: string;
-                                    }
+                                    };
                                 };
                             };
                         };

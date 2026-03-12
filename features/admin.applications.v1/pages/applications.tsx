@@ -49,7 +49,7 @@ import {
     PageLayout,
     Popup,
     PrimaryButton,
-    useDocumentation
+    useDocumentation,
 } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import find from "lodash-es/find";
@@ -60,20 +60,12 @@ import React, {
     ReactNode,
     SyntheticEvent,
     useEffect,
-    useState
+    useState,
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import {
-    Button,
-    DropdownItemProps,
-    DropdownProps,
-    Grid,
-    Icon,
-    List,
-    PaginationProps
-} from "semantic-ui-react";
+import { Button, DropdownItemProps, DropdownProps, Grid, Icon, List, PaginationProps } from "semantic-ui-react";
 import { useApplicationList, useMyAccountApplicationData } from "../api/application";
 import { useGetApplication } from "../api/use-get-application";
 import { ApplicationList } from "../components/application-list";
@@ -85,23 +77,23 @@ const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
         key: 1,
         text: I18n.instance.t("common:name") as ReactNode,
-        value: "name"
+        value: "name",
     },
     {
         key: 2,
         text: I18n.instance.t("common:type") as ReactNode,
-        value: "type"
+        value: "type",
     },
     {
         key: 3,
         text: I18n.instance.t("common:createdOn") as ReactNode,
-        value: "createdDate"
+        value: "createdDate",
     },
     {
         key: 4,
         text: I18n.instance.t("common:lastUpdatedOn") as ReactNode,
-        value: "lastUpdated"
-    }
+        value: "lastUpdated",
+    },
 ];
 
 /**
@@ -116,12 +108,9 @@ type ApplicationsPageInterface = TestableComponentInterface & IdentifiableCompon
  * @returns Applications listing page.
  */
 const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
-    props: ApplicationsPageInterface
+    props: ApplicationsPageInterface,
 ): ReactElement => {
-
-    const {
-        [ "data-testid" ]: testId
-    } = props;
+    const { ["data-testid"]: testId } = props;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
@@ -138,21 +127,22 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         return state?.config?.ui?.adminNotice?.enabled;
     });
 
-    const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
-        APPLICATIONS_LIST_SORTING_OPTIONS[0]
+    const [searchQuery, setSearchQuery] = useState<string>("");
+    const [listSortingStrategy, setListSortingStrategy] = useState<DropdownItemProps>(
+        APPLICATIONS_LIST_SORTING_OPTIONS[0],
     );
-    const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-    const consumerAccountURL: string = useSelector((state: AppState) =>
-        state?.config?.deployment?.accountApp?.tenantQualifiedPath);
-    const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
+    const [listOffset, setListOffset] = useState<number>(0);
+    const [listItemLimit, setListItemLimit] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [triggerClearQuery, setTriggerClearQuery] = useState<boolean>(false);
+    const consumerAccountURL: string = useSelector(
+        (state: AppState) => state?.config?.deployment?.accountApp?.tenantQualifiedPath,
+    );
+    const [isMyAccountEnabled, setMyAccountStatus] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
     // Note: If we are providing strong auth for applications use this state to handle it.
-    const [ strongAuth, _setStrongAuth ] = useState<boolean>(undefined);
-    const [ filteredApplicationList, setFilteredApplicationList ] = useState<ApplicationListInterface>(null);
-    const [ myAccountAppId, setMyAccountAppId ] = useState<string>(null);
-    const [ adminNoticeEnabled, setAdminNoticeEnabled ] = useState<boolean>(isAdminNoticeEnabled);
+    const [strongAuth, _setStrongAuth] = useState<boolean>(undefined);
+    const [filteredApplicationList, setFilteredApplicationList] = useState<ApplicationListInterface>(null);
+    const [myAccountAppId, setMyAccountAppId] = useState<string>(null);
+    const [adminNoticeEnabled, setAdminNoticeEnabled] = useState<boolean>(isAdminNoticeEnabled);
 
     const { organizationType } = useGetCurrentOrganizationType();
 
@@ -162,48 +152,47 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
         error: applicationListFetchRequestError,
-        mutate: mutateApplicationListFetchRequest
+        mutate: mutateApplicationListFetchRequest,
     } = useApplicationList(
         "advancedConfigurations,templateId,clientId,issuer",
         listItemLimit,
         listOffset,
         searchQuery,
         true,
-        true
+        true,
     );
 
     const {
         data: myAccountApplicationData,
         isLoading: isMyAccountApplicationDataFetchRequestLoading,
-        error: myAccountApplicationDataFetchRequestError
+        error: myAccountApplicationDataFetchRequestError,
     } = useMyAccountApplicationData("advancedConfigurations,templateId,clientId,issuer");
 
     const {
         data: myAccountApplication,
         isLoading: isMyAccountApplicationGetRequestLoading,
-        error: myAccountApplicationGetRequestError
-    } = useGetApplication(myAccountAppId , !!myAccountAppId);
+        error: myAccountApplicationGetRequestError,
+    } = useGetApplication(myAccountAppId, !!myAccountAppId);
 
     const organizationFeatureConfig: FeatureAccessConfigInterface = featureConfig?.organizations;
 
     const isOrganizationApplicationCreationEnabled: boolean = isFeatureEnabled(
         organizationFeatureConfig,
         OrganizationManagementConstants.FEATURE_DICTIONARY.get(
-            OrganizationFeatureDictionaryKeys.OrganizationApplicationCreation
-        ));
+            OrganizationFeatureDictionaryKeys.OrganizationApplicationCreation,
+        ),
+    );
 
     /**
      * Set the application id for My Account.
      */
     useEffect(() => {
         if (myAccountApplicationData?.applications?.length === 1) {
-            myAccountApplicationData.applications.forEach((
-                item: ApplicationListItemInterface
-            ) => {
+            myAccountApplicationData.applications.forEach((item: ApplicationListItemInterface) => {
                 setMyAccountAppId(item?.id);
             });
         }
-    }, [ myAccountApplicationData ]);
+    }, [myAccountApplicationData]);
 
     /**
      * Sets the initial spinner.
@@ -213,9 +202,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
 
         if (
-            !isApplicationListFetchRequestLoading
-                && !isMyAccountApplicationGetRequestLoading
-                && !isMyAccountApplicationDataFetchRequestLoading
+            !isApplicationListFetchRequestLoading &&
+            !isMyAccountApplicationGetRequestLoading &&
+            !isMyAccountApplicationDataFetchRequestLoading
         ) {
             if (myAccountApplication) {
                 status = myAccountApplication?.applicationEnabled;
@@ -227,7 +216,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         isApplicationListFetchRequestLoading,
         isMyAccountApplicationGetRequestLoading,
         isMyAccountApplicationDataFetchRequestLoading,
-        myAccountAppId
+        myAccountAppId,
     ]);
 
     /**
@@ -238,27 +227,30 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             return;
         }
 
-        if (applicationListFetchRequestError.response
-            && applicationListFetchRequestError.response.data
-            && applicationListFetchRequestError.response.data.description) {
-            dispatch(addAlert({
-                description: applicationListFetchRequestError.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t("applications:notifications." +
-                    "fetchApplications.error.message")
-            }));
+        if (
+            applicationListFetchRequestError.response &&
+            applicationListFetchRequestError.response.data &&
+            applicationListFetchRequestError.response.data.description
+        ) {
+            dispatch(
+                addAlert({
+                    description: applicationListFetchRequestError.response.data.description,
+                    level: AlertLevels.ERROR,
+                    message: t("applications:notifications." + "fetchApplications.error.message"),
+                }),
+            );
 
             return;
         }
 
-        dispatch(addAlert({
-            description: t("applications:notifications.fetchApplications" +
-                ".genericError.description"),
-            level: AlertLevels.ERROR,
-            message: t("applications:notifications." +
-                "fetchApplications.genericError.message")
-        }));
-    }, [ applicationListFetchRequestError ]);
+        dispatch(
+            addAlert({
+                description: t("applications:notifications.fetchApplications" + ".genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("applications:notifications." + "fetchApplications.genericError.message"),
+            }),
+        );
+    }, [applicationListFetchRequestError]);
 
     /**
      * Handles the my account application fetch request error.
@@ -269,24 +261,25 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         }
 
         if (myAccountApplicationDataFetchRequestError?.response?.data?.description) {
-            dispatch(addAlert({
-                description: myAccountApplicationDataFetchRequestError.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t("applications:notifications." +
-                    "fetchMyAccountApplication.error.message")
-            }));
+            dispatch(
+                addAlert({
+                    description: myAccountApplicationDataFetchRequestError.response.data.description,
+                    level: AlertLevels.ERROR,
+                    message: t("applications:notifications." + "fetchMyAccountApplication.error.message"),
+                }),
+            );
 
             return;
         }
 
-        dispatch(addAlert({
-            description: t("applications:notifications.fetchMyAccountApplication" +
-                ".genericError.description"),
-            level: AlertLevels.ERROR,
-            message: t("applications:notifications." +
-                "fetchMyAccountApplication.genericError.message")
-        }));
-    }, [ myAccountApplicationDataFetchRequestError ]);
+        dispatch(
+            addAlert({
+                description: t("applications:notifications.fetchMyAccountApplication" + ".genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("applications:notifications." + "fetchMyAccountApplication.genericError.message"),
+            }),
+        );
+    }, [myAccountApplicationDataFetchRequestError]);
 
     /**
      * Handles the My Account application data fetch request error.
@@ -296,31 +289,32 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             return;
         }
 
-        if (
-            myAccountApplicationGetRequestError?.response?.data?.description
-        ) {
+        if (myAccountApplicationGetRequestError?.response?.data?.description) {
             if (myAccountApplicationGetRequestError.response?.status === 404) {
                 return;
             }
 
-            dispatch(addAlert({
-                description: myAccountApplicationGetRequestError.response.data.description ??
-                    t("applications:myaccount.fetchMyAccountStatus.error.description"),
-                level: AlertLevels.ERROR,
-                message: t("applications:myaccount.fetchMyAccountStatus.error.message")
-            }));
+            dispatch(
+                addAlert({
+                    description:
+                        myAccountApplicationGetRequestError.response.data.description ??
+                        t("applications:myaccount.fetchMyAccountStatus.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:myaccount.fetchMyAccountStatus.error.message"),
+                }),
+            );
 
             return;
         }
 
-        dispatch(addAlert({
-            description: t("applications:myaccount.fetchMyAccountStatus" +
-                ".genericError.description"),
-            level: AlertLevels.ERROR,
-            message: t("applications:myaccount.fetchMyAccountStatus" +
-                ".genericError.message")
-        }));
-    }, [ myAccountApplicationGetRequestError ]);
+        dispatch(
+            addAlert({
+                description: t("applications:myaccount.fetchMyAccountStatus" + ".genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("applications:myaccount.fetchMyAccountStatus" + ".genericError.message"),
+            }),
+        );
+    }, [myAccountApplicationGetRequestError]);
 
     /**
      * Filter out the system apps from the application list.
@@ -329,17 +323,16 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * access the system apps details.
      */
     useEffect(() => {
-
         if (applicationList?.applications) {
             const appList: ApplicationListInterface = cloneDeep(applicationList);
 
             appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
-            appList.totalResults = appList.totalResults -
-                (applicationList.applications.length - appList.applications.length);
+            appList.totalResults =
+                appList.totalResults - (applicationList.applications.length - appList.applications.length);
 
             setFilteredApplicationList(appList);
         }
-    }, [ applicationList ]);
+    }, [applicationList]);
 
     /**
      * Sets the list sorting strategy.
@@ -347,11 +340,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @param event - The event.
      * @param data - Dropdown data.
      */
-    const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>,
-        data: DropdownProps): void => {
-        setListSortingStrategy(find(APPLICATIONS_LIST_SORTING_OPTIONS, (option: DropdownItemProps) => {
-            return data.value === option.value;
-        }));
+    const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
+        setListSortingStrategy(
+            find(APPLICATIONS_LIST_SORTING_OPTIONS, (option: DropdownItemProps) => {
+                return data.value === option.value;
+            }),
+        );
     };
 
     /**
@@ -361,7 +355,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @returns `true` if `Next` page nav button should be shown.
      */
     const shouldShowNextPageNavigation = (appList: ApplicationListInterface): boolean => {
-
         return appList?.startIndex + appList?.count !== appList?.totalResults + 1;
     };
 
@@ -383,7 +376,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @param data - Pagination component data.
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
-        setListOffset((data.activePage as number - 1) * listItemLimit);
+        setListOffset(((data.activePage as number) - 1) * listItemLimit);
     };
 
     /**
@@ -392,8 +385,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @param event - Mouse event.
      * @param data - Dropdown data.
      */
-    const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>,
-        data: DropdownProps): void => {
+    const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         setListItemLimit(data.value as number);
     };
 
@@ -418,20 +410,22 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const navigateToMyAccountSettings = (): void => {
         if (strongAuth) {
             history.push({
-                pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
-                    ":id", myAccountApplicationData?.applications[0]?.id
-                ),
-                search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=${
-                    ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`
+                pathname: AppConstants.getPaths()
+                    .get("APPLICATION_EDIT")
+                    .replace(":id", myAccountApplicationData?.applications[0]?.id),
+                search: `?${ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY}=${
+                    ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE
+                }`,
             });
         } else {
             history.push({
-                pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
-                    ":id", myAccountApplicationData?.applications[0]?.id
-                ),
-                search: myAccountApplicationData?.applications[0]?.access === ApplicationAccessTypes.READ
-                    ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
-                    : ""
+                pathname: AppConstants.getPaths()
+                    .get("APPLICATION_EDIT")
+                    .replace(":id", myAccountApplicationData?.applications[0]?.id),
+                search:
+                    myAccountApplicationData?.applications[0]?.access === ApplicationAccessTypes.READ
+                        ? `?${ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY}=true`
+                        : "",
             });
         }
     };
@@ -443,28 +437,20 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      */
     const renderTenantedMyAccountLink = (): ReactElement => {
         if (
-            !applicationConfig.advancedConfigurations.showMyAccount
-            || UIConfig?.legacyMode?.applicationListSystemApps
+            !applicationConfig.advancedConfigurations.showMyAccount ||
+            UIConfig?.legacyMode?.applicationListSystemApps
         ) {
             return null;
         }
 
         return (
-            <EmphasizedSegment
-                className="mt-0 mb-5"
-                data-componentid="application-consumer-account-link"
-            >
+            <EmphasizedSegment className="mt-0 mb-5" data-componentid="application-consumer-account-link">
                 <List>
                     <List.Item>
                         <Grid verticalAlign="middle">
-                            <Grid.Column
-                                floated="left"
-                                mobile={ 16 }
-                                computer={ 9 }
-                                verticalAlign="middle"
-                            >
+                            <Grid.Column floated="left" mobile={16} computer={9} verticalAlign="middle">
                                 <GenericIcon
-                                    icon={ getGeneralIcons().myAccountSolidIcon }
+                                    icon={getGeneralIcons().myAccountSolidIcon}
                                     floated="left"
                                     size="mini"
                                     spaced="right"
@@ -478,73 +464,59 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                         data-componentid="application-consumer-account-link-title"
                                         className="my-account-title"
                                     >
-                                        { t("applications:myaccount.title") }
-                                        {
-                                            applicationConfig?.advancedConfigurations?.showMyAccountStatus && (
-                                                <Icon
-                                                    color={ isMyAccountEnabled ? "green" : "grey" }
-                                                    name={ isMyAccountEnabled ? "check circle" : "minus circle" }
-                                                    className="middle aligned ml-1"
-                                                />
-                                            )
-                                        }
+                                        {t("applications:myaccount.title")}
+                                        {applicationConfig?.advancedConfigurations?.showMyAccountStatus && (
+                                            <Icon
+                                                color={isMyAccountEnabled ? "green" : "grey"}
+                                                name={isMyAccountEnabled ? "check circle" : "minus circle"}
+                                                className="middle aligned ml-1"
+                                            />
+                                        )}
                                     </List.Header>
-                                    <List.Description
-                                        data-componentid="application-consumer-account-link-description"
-                                    >
-                                        { t("applications:myaccount.description") }
-                                        <DocumentationLink
-                                            link={ getLink("develop.applications.myaccount.learnMore") }
-                                        >
-                                            { t("common:learnMore") }
+                                    <List.Description data-componentid="application-consumer-account-link-description">
+                                        {t("applications:myaccount.description")}
+                                        <DocumentationLink link={getLink("develop.applications.myaccount.learnMore")}>
+                                            {t("common:learnMore")}
                                         </DocumentationLink>
                                     </List.Description>
                                 </List.Content>
                             </Grid.Column>
-                            { isMyAccountEnabled ? (
+                            {isMyAccountEnabled ? (
                                 <Popup
-                                    trigger={ (
-                                        <Grid.Column
-                                            mobile={ 16 }
-                                            computer={ 6 }
-                                            className="pr-0"
-                                        >
+                                    trigger={
+                                        <Grid.Column mobile={16} computer={6} className="pr-0">
                                             <CopyInputField
-                                                value={ consumerAccountURL }
-                                                data-componentid={ "application-consumer-account-link-copy-field" }
+                                                value={consumerAccountURL}
+                                                data-componentid={"application-consumer-account-link-copy-field"}
                                             />
                                         </Grid.Column>
-                                    ) }
-                                    content={ t("applications:myaccount.popup") }
+                                    }
+                                    content={t("applications:myaccount.popup")}
                                     position="top center"
                                     size="mini"
                                     hideOnScroll
                                     inverted
                                 />
-                            ) : null
-                            }
-                            <Grid.Column
-                                mobile={ 16 }
-                                computer={ 1 }
-                            >
-                                { (
+                            ) : null}
+                            <Grid.Column mobile={16} computer={1}>
+                                {
                                     <Popup
-                                        trigger={ (
+                                        trigger={
                                             <Button
                                                 className="my-account-settings-button"
                                                 data-componentid="navigate-to-my-account-settings-button"
-                                                onClick={ (): void => navigateToMyAccountSettings() }
+                                                onClick={(): void => navigateToMyAccountSettings()}
                                             >
                                                 <GearIcon />
                                             </Button>
-                                        ) }
-                                        content={ t("applications:myaccount.settings") }
+                                        }
+                                        content={t("applications:myaccount.settings")}
                                         position="top center"
                                         size="mini"
                                         hideOnScroll
                                         inverted
                                     />
-                                ) }
+                                }
                             </Grid.Column>
                         </Grid>
                     </List.Item>
@@ -559,110 +531,125 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
     return (
         <ExtensionTemplatesProvider
-            resourceType={ ResourceTypes.APPLICATIONS }
-            categories={ ApplicationTemplateConstants.SUPPORTED_CATEGORIES_INFO }
+            resourceType={ResourceTypes.APPLICATIONS}
+            categories={ApplicationTemplateConstants.SUPPORTED_CATEGORIES_INFO}
         >
             <PageLayout
                 pageTitle="Applications"
-                action={ (filteredApplicationList?.totalResults > 0) ? (
-                    <>
-                        { organizationType !== OrganizationType.SUBORGANIZATION && (
-                            <Show
-                                when={ featureConfig?.applications?.scopes?.create }>
-                                {
-                                    !applicationDisabledFeatures?.includes(
-                                        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS")
-                                    ) &&
-                                        (
-                                            <Popup
-                                                trigger={ (
-                                                    <Button
-                                                        data-componentid={ "applications-settings-button" }
-                                                        icon={ GearIcon }
-                                                        onClick={ handleSettingsButton }
-                                                    />
-                                                ) }
-                                                content={ t("applications:forms.applicationsSettings.title") }
-                                                position="top center"
-                                                size="mini"
-                                                hideOnScroll
-                                                inverted
-                                            />
-                                        )
-                                }
-                            </Show>
-                        ) }
-                        { (organizationType !== OrganizationType.SUBORGANIZATION ||
-                         isOrganizationApplicationCreationEnabled) && (
-                            <Show
-                                when={ featureConfig?.applications?.scopes?.create }
-                            >
-                                <PrimaryButton
-                                    onClick={ (): void => {
-                                        eventPublisher.publish("application-click-new-application-button");
-                                        history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                                    } }
-                                    data-testid={ `${ testId }-list-layout-add-button` }
-                                >
-                                    <Icon name="add" />
-                                    { t("applications:list.actions.add") }
-                                </PrimaryButton>
-                            </Show>
-                        ) }
-                    </>
-                ) : ( organizationType !== OrganizationType.SUBORGANIZATION ? (
-                    <Show when={ featureConfig?.applications?.scopes?.create }>
-                        {
-                            !applicationDisabledFeatures?.includes(
-                                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS")
-                            ) &&
-                                (
-                                    <Popup
-                                        trigger={ (
-                                            <Button
-                                                data-componentid={ "applications-settings-button" }
-                                                icon={ GearIcon }
-                                                onClick={ handleSettingsButton }
-                                            />
-                                        ) }
-                                        content={ t("applications:forms.applicationsSettings.title") }
-                                        position="top center"
-                                        size="mini"
-                                        hideOnScroll
-                                        inverted
-                                    />
-                                )
-                        }
-                    </Show>
-                ) : null
-                ) }
-                title={ t("console:develop.pages.applications.title") }
-                description={ organizationType !== OrganizationType.SUBORGANIZATION
-                    ? (
+                action={
+                    filteredApplicationList?.totalResults > 0 ? (
+                        <>
+                            {organizationType !== OrganizationType.SUBORGANIZATION && (
+                                <Show when={featureConfig?.applications?.scopes?.create}>
+                                    {!applicationDisabledFeatures?.includes(
+                                        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS"),
+                                    ) && (
+                                        <Popup
+                                            trigger={
+                                                <Button
+                                                    data-componentid={"applications-settings-button"}
+                                                    icon={GearIcon}
+                                                    onClick={handleSettingsButton}
+                                                />
+                                            }
+                                            content={t("applications:forms.applicationsSettings.title")}
+                                            position="top center"
+                                            size="mini"
+                                            hideOnScroll
+                                            inverted
+                                        />
+                                    )}
+                                </Show>
+                            )}
+                            {(organizationType !== OrganizationType.SUBORGANIZATION ||
+                                isOrganizationApplicationCreationEnabled) && (
+                                <Show when={featureConfig?.applications?.scopes?.create}>
+                                    <PrimaryButton
+                                        onClick={(): void => {
+                                            eventPublisher.publish("application-click-new-application-button");
+                                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                                        }}
+                                        data-testid={`${testId}-list-layout-add-button`}
+                                    >
+                                        <Icon name="add" />
+                                        {t("applications:list.actions.add")}
+                                    </PrimaryButton>
+                                </Show>
+                            )}
+                        </>
+                    ) : organizationType !== OrganizationType.SUBORGANIZATION ? (
+                        <Show when={featureConfig?.applications?.scopes?.create}>
+                            {!applicationDisabledFeatures?.includes(
+                                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS"),
+                            ) && (
+                                <Popup
+                                    trigger={
+                                        <Button
+                                            data-componentid={"applications-settings-button"}
+                                            icon={GearIcon}
+                                            onClick={handleSettingsButton}
+                                        />
+                                    }
+                                    content={t("applications:forms.applicationsSettings.title")}
+                                    position="top center"
+                                    size="mini"
+                                    hideOnScroll
+                                    inverted
+                                />
+                            )}
+                        </Show>
+                    ) : null
+                }
+                title={t("console:develop.pages.applications.title")}
+                description={
+                    organizationType !== OrganizationType.SUBORGANIZATION ? (
                         <p>
-                            { t("console:develop.pages.applications.subTitle") }
-                            <DocumentationLink
-                                link={ getLink("develop.applications.learnMore") }
-                            >
-                                { t("common:learnMore") }
+                            {t("console:develop.pages.applications.subTitle")}
+                            <DocumentationLink link={getLink("develop.applications.learnMore")}>
+                                {t("common:learnMore")}
                             </DocumentationLink>
                         </p>
-                    )
-                    : (
+                    ) : (
                         <p>
-                            { t("console:develop.pages.applications.alternateSubTitle") }
-                            <DocumentationLink
-                                link={ getLink("develop.applications.learnMore") }
-                            >
-                                { t("common:learnMore") }
+                            {t("console:develop.pages.applications.alternateSubTitle")}
+                            <DocumentationLink link={getLink("develop.applications.learnMore")}>
+                                {t("common:learnMore")}
                             </DocumentationLink>
                         </p>
                     )
                 }
-                contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
-                data-testid={ `${ testId }-page-layout` }
+                contentTopMargin={AppConstants.getTenant() === AppConstants.getSuperTenant()}
+                data-testid={`${testId}-page-layout`}
             >
-                { isAdminNoticeEnabled && adminNoticeEnabled && (
+                {
+                    <Box sx={{ mb: 2 }}>
+                        <AdminNotice
+                            data-componentid="applications-admin-notice"
+                            title="Applications Disabled — Free Tier Limit Exceeded"
+                            description="All your applications have been disabled until you take one of the below actions."
+                            instructions={[
+                                <Trans
+                                    key="upgrade"
+                                    i18nKey="console:develop.pages.applications.adminNotice.instructions.0"
+                                >
+                                    <strong>Upgrade your plan</strong> to keep all your existing applications active and
+                                    be able to create new applications.
+                                </Trans>,
+                                <Trans
+                                    key="free-tier"
+                                    i18nKey="console:develop.pages.applications.adminNotice.instructions.1"
+                                >
+                                    <strong>Remain on the free tier</strong> and delete excess applications to fall
+                                    within the allowed limit. You will then be able to re-enable the remaining applications.
+                                </Trans>,
+                            ]}
+                            showCloseButton={false}
+                            titleVariant="h6"
+                            setDisplayBanner={setAdminNoticeEnabled}
+                        />
+                    </Box>
+                }
+                {/* {
                     <Box sx={ { mb: 2 } }>
                         <AdminNotice
                             data-componentid="applications-admin-notice"
@@ -683,140 +670,127 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             setDisplayBanner={ setAdminNoticeEnabled }
                         />
                     </Box>
-                ) }
-                {
-                    !isMyAccountApplicationDataFetchRequestLoading
-                        && myAccountApplicationData?.applications?.length !== 0
-                        && renderTenantedMyAccountLink()
-                }
+                } */}
+                {!isMyAccountApplicationDataFetchRequestLoading &&
+                    myAccountApplicationData?.applications?.length !== 0 &&
+                    renderTenantedMyAccountLink()}
                 <ListLayout
-                    advancedSearch={ (
+                    advancedSearch={
                         <AdvancedSearchWithBasicFilters
-                            onFilter={ handleApplicationFilter }
-                            filterAttributeOptions={ [
+                            onFilter={handleApplicationFilter}
+                            filterAttributeOptions={[
                                 {
                                     key: 0,
                                     text: t("common:name"),
-                                    value: "name"
+                                    value: "name",
                                 },
                                 {
                                     key: 1,
                                     text: t("common:clientId"),
-                                    value: "clientId"
+                                    value: "clientId",
                                 },
                                 {
                                     key: 2,
                                     text: t("common:issuer"),
-                                    value: "issuer"
-                                }
-                            ] }
-                            filterAttributePlaceholder={
-                                t("applications:advancedSearch.form" +
-                                    ".inputs.filterAttribute.placeholder")
-                            }
-                            filterConditionsPlaceholder={
-                                t("applications:advancedSearch.form" +
-                                    ".inputs.filterCondition.placeholder")
-                            }
-                            filterValuePlaceholder={
-                                t("applications:advancedSearch.form.inputs.filterValue" +
-                                    ".placeholder")
-                            }
-                            placeholder={ t("applications:advancedSearch.placeholder") }
-                            style={ { minWidth: "425px" } }
+                                    value: "issuer",
+                                },
+                            ]}
+                            filterAttributePlaceholder={t(
+                                "applications:advancedSearch.form" + ".inputs.filterAttribute.placeholder",
+                            )}
+                            filterConditionsPlaceholder={t(
+                                "applications:advancedSearch.form" + ".inputs.filterCondition.placeholder",
+                            )}
+                            filterValuePlaceholder={t(
+                                "applications:advancedSearch.form.inputs.filterValue" + ".placeholder",
+                            )}
+                            placeholder={t("applications:advancedSearch.placeholder")}
+                            style={{ minWidth: "425px" }}
                             defaultSearchAttribute="name"
                             defaultSearchOperator="co"
                             predefinedDefaultSearchStrategy={
                                 "name co %search-value% or clientId co %search-value% or issuer co %search-value%"
                             }
-                            triggerClearQuery={ triggerClearQuery }
-                            data-testid={ `${ testId }-list-advanced-search` }
+                            triggerClearQuery={triggerClearQuery}
+                            data-testid={`${testId}-list-advanced-search`}
                         />
-                    ) }
-                    currentListSize={ filteredApplicationList?.count }
-                    isLoading={
-                        isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading
                     }
-                    listItemLimit={ listItemLimit }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                    onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ handleListSortingStrategyOnChange }
-                    showPagination={ true }
+                    currentListSize={filteredApplicationList?.count}
+                    isLoading={isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading}
+                    listItemLimit={listItemLimit}
+                    onItemsPerPageDropdownChange={handleItemsPerPageDropdownChange}
+                    onPageChange={handlePaginationChange}
+                    onSortStrategyChange={handleListSortingStrategyOnChange}
+                    showPagination={true}
                     showTopActionPanel={
-                        isApplicationListFetchRequestLoading
-                        || isMyAccountApplicationDataFetchRequestLoading
-                        || !(!searchQuery && filteredApplicationList?.totalResults <= 0) }
-                    sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
-                    sortStrategy={ listSortingStrategy }
-                    totalPages={ Math.ceil(filteredApplicationList?.totalResults / listItemLimit) }
-                    totalListSize={ filteredApplicationList?.totalResults }
-                    paginationOptions={ {
-                        disableNextButton: !shouldShowNextPageNavigation(filteredApplicationList)
-                    } }
-                    data-testid={ `${ testId }-list-layout` }
+                        isApplicationListFetchRequestLoading ||
+                        isMyAccountApplicationDataFetchRequestLoading ||
+                        !(!searchQuery && filteredApplicationList?.totalResults <= 0)
+                    }
+                    sortOptions={APPLICATIONS_LIST_SORTING_OPTIONS}
+                    sortStrategy={listSortingStrategy}
+                    totalPages={Math.ceil(filteredApplicationList?.totalResults / listItemLimit)}
+                    totalListSize={filteredApplicationList?.totalResults}
+                    paginationOptions={{
+                        disableNextButton: !shouldShowNextPageNavigation(filteredApplicationList),
+                    }}
+                    data-testid={`${testId}-list-layout`}
                 >
                     <ApplicationList
-                        advancedSearch={ (
+                        advancedSearch={
                             <AdvancedSearchWithBasicFilters
-                                onFilter={ handleApplicationFilter }
-                                filterAttributeOptions={ [
+                                onFilter={handleApplicationFilter}
+                                filterAttributeOptions={[
                                     {
                                         key: 0,
                                         text: t("common:name"),
-                                        value: "name"
+                                        value: "name",
                                     },
                                     {
                                         key: 1,
                                         text: t("common:clientId"),
-                                        value: "clientId"
+                                        value: "clientId",
                                     },
                                     {
                                         key: 2,
                                         text: t("common:issuer"),
-                                        value: "issuer"
-                                    }
-                                ] }
-                                filterAttributePlaceholder={
-                                    t("applications:advancedSearch." +
-                                        "form.inputs.filterAttribute.placeholder")
-                                }
-                                filterConditionsPlaceholder={
-                                    t("applications:advancedSearch." +
-                                        "form.inputs.filterCondition.placeholder")
-                                }
-                                filterValuePlaceholder={
-                                    t("applications:advancedSearch." +
-                                        "form.inputs.filterValue.placeholder")
-                                }
-                                placeholder={
-                                    t("applications:advancedSearch.placeholder")
-                                }
-                                style={ { minWidth: "425px" } }
+                                        value: "issuer",
+                                    },
+                                ]}
+                                filterAttributePlaceholder={t(
+                                    "applications:advancedSearch." + "form.inputs.filterAttribute.placeholder",
+                                )}
+                                filterConditionsPlaceholder={t(
+                                    "applications:advancedSearch." + "form.inputs.filterCondition.placeholder",
+                                )}
+                                filterValuePlaceholder={t(
+                                    "applications:advancedSearch." + "form.inputs.filterValue.placeholder",
+                                )}
+                                placeholder={t("applications:advancedSearch.placeholder")}
+                                style={{ minWidth: "425px" }}
                                 defaultSearchAttribute="name"
                                 defaultSearchOperator="co"
                                 predefinedDefaultSearchStrategy={
                                     "name co %search-value% or clientId co %search-value% or " +
                                     "issuer co %search-value%"
                                 }
-                                triggerClearQuery={ triggerClearQuery }
-                                data-testid={ `${ testId }-list-advanced-search` }
+                                triggerClearQuery={triggerClearQuery}
+                                data-testid={`${testId}-list-advanced-search`}
                             />
-                        ) }
-                        featureConfig={ featureConfig }
-                        isSetStrongerAuth={ strongAuth }
+                        }
+                        featureConfig={featureConfig}
+                        isSetStrongerAuth={strongAuth}
                         isLoading={
                             isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading
                         }
-                        list={ filteredApplicationList }
-                        onApplicationDelete={ handleApplicationDelete }
-                        onEmptyListPlaceholderActionClick={
-                            () => {
-                                history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                            }
-                        }
-                        onSearchQueryClear={ handleSearchQueryClear }
-                        searchQuery={ searchQuery }
-                        data-testid={ `${ testId }-list` }
+                        list={filteredApplicationList}
+                        onApplicationDelete={handleApplicationDelete}
+                        onEmptyListPlaceholderActionClick={() => {
+                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                        }}
+                        onSearchQueryClear={handleSearchQueryClear}
+                        searchQuery={searchQuery}
+                        data-testid={`${testId}-list`}
                         data-componentid="application"
                     />
                 </ListLayout>
@@ -830,7 +804,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
  */
 ApplicationsPage.defaultProps = {
     "data-componentid": "applications",
-    "data-testid": "applications"
+    "data-testid": "applications",
 };
 
 /**
