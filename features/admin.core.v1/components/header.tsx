@@ -454,30 +454,30 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                     data-componentid="start-trial-button"
                 >
                     <span className="header-upgrade-btn-text">
-                        Start Trial
+                        { I18n.instance.t("console:common.upgrade") as ReactNode }
                     </span>
                 </Button>
             </Show>
         ),
-        tierName === TenantTier.FREE &&
-            billingPortalURL &&
-            !isPrivilegedUser &&
-            window["AppUtils"].getConfig().extensions.upgradeButtonEnabled && (
-            <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
-                <a href={ upgradeButtonURL } target="_blank" rel="noreferrer" data-componentid="upgrade-button-link">
-                    <Button
-                        className="header-upgrade-btn"
-                        color="secondary"
-                        variant="outlined"
-                        startIcon={ <DiamondIcon /> }
-                    >
-                        <span className="header-upgrade-btn-text">
-                            { I18n.instance.t("console:common.upgrade") as ReactNode }
-                        </span>
-                    </Button>
-                </a>
-            </Show>
-        )
+        // tierName === TenantTier.FREE &&
+        //     billingPortalURL &&
+        //     !isPrivilegedUser &&
+        //     window["AppUtils"].getConfig().extensions.upgradeButtonEnabled && (
+        //     <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+        //         <a href={ upgradeButtonURL } target="_blank" rel="noreferrer" data-componentid="upgrade-button-link">
+        //             <Button
+        //                 className="header-upgrade-btn"
+        //                 color="secondary"
+        //                 variant="outlined"
+        //                 startIcon={ <DiamondIcon /> }
+        //             >
+        //                 <span className="header-upgrade-btn-text">
+        //                     { I18n.instance.t("console:common.upgrade") as ReactNode }
+        //                 </span>
+        //             </Button>
+        //         </a>
+        //     </Show>
+        // )
     ];
 
     /**
