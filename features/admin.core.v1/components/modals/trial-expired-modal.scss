@@ -1,0 +1,197 @@
+/**
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.trial-expired-modal {
+    &.ui.modal {
+        border-radius: var(--oxygen-shape-borderRadius);
+        overflow: hidden;
+        max-width: 520px;
+        box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.12),
+            0 2px 8px rgba(0, 0, 0, 0.06);
+        animation: modalEnter 250ms ease-out;
+    }
+
+    .trial-expired-modal-header {
+        background: linear-gradient(92deg, #FFF3E6 1.5%, #FAF9F8 59.25%);
+        padding: 32px 30px 28px;
+        border-bottom: none;
+        position: relative;
+        overflow: hidden;
+
+        .trial-expired-modal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(var(--oxygen-palette-primary-mainChannel) / 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(var(--oxygen-palette-primary-mainChannel) / 0.2);
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--oxygen-palette-primary-main);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+
+            .badge-dot {
+                width: 6px;
+                height: 6px;
+                background: var(--oxygen-palette-primary-main);
+                border-radius: 50%;
+                animation: pulse-dot 3s ease-in-out infinite;
+            }
+        }
+
+        .trial-expired-modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(88deg, #EC5161 -3.25%, #F87643 102.62%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+            margin: 0 0 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .trial-expired-modal-subtitle {
+            font-size: 14px;
+            color: var(--oxygen-palette-text-secondary);
+            line-height: 1.5;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+    }
+
+    .trial-expired-modal-body {
+        padding: 28px 30px 20px !important;
+        background: var(--oxygen-palette-background-paper);
+
+        .trial-expired-features-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--oxygen-palette-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 22px;
+        }
+
+        .trial-expired-features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 24px;
+
+            .trial-expired-feature-item {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+
+                .feature-check {
+                    flex-shrink: 0;
+                    width: 26px;
+                    height: 26px;
+                    background: linear-gradient(135deg, rgba(var(--oxygen-palette-success-mainChannel) / 0.12), rgba(var(--oxygen-palette-success-mainChannel) / 0.2));
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-top: 1px;
+
+                    svg {
+                        width: 14px;
+                        height: 14px;
+                        color: var(--oxygen-palette-success-main);
+                    }
+                }
+
+                .feature-text {
+                    .feature-name {
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: var(--oxygen-palette-text-primary);
+                        line-height: 1.4;
+                    }
+
+                    .feature-desc {
+                        font-size: 13px;
+                        color: var(--oxygen-palette-text-secondary);
+                        line-height: 1.4;
+                        margin-top: 2px;
+                    }
+                }
+            }
+        }
+
+        .trial-expired-note {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--oxygen-palette-background-paper);
+            border: 1px solid var(--oxygen-palette-divider);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 13px;
+            color: var(--oxygen-palette-text-secondary);
+            line-height: 1.4;
+
+            .note-icon {
+                flex-shrink: 0;
+                font-size: 16px;
+            }
+        }
+    }
+
+    .trial-expired-modal-actions {
+        padding: 21px 30px !important;
+        background: var(--oxygen-palette-background-paper);
+        border-top: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .ui.primary.button {
+            width: 30%;
+        }
+    }
+}
+
+@keyframes pulse-dot {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.4;
+    }
+}
+
+@keyframes modalEnter {
+    from {
+        opacity: 0;
+        transform: scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

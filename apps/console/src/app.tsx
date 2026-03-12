@@ -22,6 +22,7 @@ import {
 } from "@wso2is/access-control";
 import  useCDSConfig  from "@wso2is/admin.cds.v1/hooks/use-config";
 import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
+import TrialExpiredModal from "@wso2is/admin.core.v1/components/modals/trial-expired-modal";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { DocumentationLinks } from "@wso2is/admin.core.v1/configs/documentation";
@@ -192,6 +193,7 @@ export const App = ({
     const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
+    const [ isTrialExpiredModalOpen, setIsTrialExpiredModalOpen ] = useState<boolean>(true);
     const [ featureGateConfigData, setFeatureGateConfigData ] =
         useState<FeatureGateInterface | null>(featureGateConfigUpdated);
 
@@ -581,6 +583,13 @@ export const App = ({
                                                 primaryAction={
                                                     signOut
                                                 }
+                                            />
+                                            <TrialExpiredModal
+                                                open={ isTrialExpiredModalOpen }
+                                                onClose={ () => setIsTrialExpiredModalOpen(false) }
+                                                onUpgrade={ () => {
+                                                    // TODO: Navigate to upgrade/billing page
+                                                } }
                                             />
                                             <ChunkErrorModal
                                                 heading={
