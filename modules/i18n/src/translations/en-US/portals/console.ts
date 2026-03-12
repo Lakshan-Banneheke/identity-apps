@@ -2686,17 +2686,14 @@ export const console: ConsoleNS = {
             applications: {
                 adminNotice: {
                     description:
-                        "You have exceeded the free tier application limit. All your applications have " +
-                        "been disabled until you take action.",
+                        "Your organization has more applications than your current plan allows. To restore access, choose one of the following:",
                     instructions: {
-                        0:
-                            "<1>Upgrade your plan</1> to keep all your existing applications active and be able to " +
-                            "create new applications.",
-                        1:
-                            "<1>Remain on the free tier</1> and delete excess applications to fall within the " +
-                            "allowed limit. Your remaining applications will be re-enabled automatically.",
+                        upgrade:
+                            "<strong>Upgrade your plan</strong> to increase your application limit. Once upgraded, you can re-enable your existing applications and create new ones.",
+                        currentTier:
+                            "<strong>Stay on your current plan</strong>  and remove excess applications to fall within the allowed limit. Once within the limit, you can re-enable the remaining applications.",
                     },
-                    title: "Applications Disabled — Free Tier Limit Exceeded",
+                    title: "Applications Disabled — Plan Limit Exceeded",
                 },
                 alternateSubTitle: "Manage your applications and customize login flows.",
                 subTitle: "Create and manage your applications and configure sign-in.",

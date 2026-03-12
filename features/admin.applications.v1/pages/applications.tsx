@@ -625,23 +625,23 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     <Box sx={{ mb: 2 }}>
                         <AdminNotice
                             data-componentid="applications-admin-notice"
-                            title="Applications Disabled — Free Tier Limit Exceeded"
-                            description="All your applications have been disabled until you take one of the below actions."
+                            title={ "Applications Disabled — Plan Limit Exceeded" }
+                            description={ 
+                                <span>
+                                    Your organization has more applications than your current plan allows. 
+                                    <DocumentationLink link="https://wso2.com/asgardeo/pricing/">
+                                        Compare Plans
+                                    </DocumentationLink>
+                                    <br /> To restore access, choose one of the following:
+                                </span> 
+                                }
                             instructions={[
-                                <Trans
-                                    key="upgrade"
-                                    i18nKey="console:develop.pages.applications.adminNotice.instructions.0"
-                                >
-                                    <strong>Upgrade your plan</strong> to keep all your existing applications active and
-                                    be able to create new applications.
-                                </Trans>,
-                                <Trans
-                                    key="free-tier"
-                                    i18nKey="console:develop.pages.applications.adminNotice.instructions.1"
-                                >
-                                    <strong>Remain on the free tier</strong> and delete excess applications to fall
-                                    within the allowed limit. You will then be able to re-enable the remaining applications.
-                                </Trans>,
+                                <p>
+                                    <strong>Upgrade your plan</strong> to increase your application limit. Once upgraded, you can re-enable your existing applications and create new ones.
+                                </p>,
+                                <p>
+                                    <strong>Stay on your current plan</strong>  and remove excess applications to fall within the allowed limit. Once within the limit, you can re-enable the remaining applications.
+                                </p>,
                             ]}
                             showCloseButton={false}
                             titleVariant="h6"

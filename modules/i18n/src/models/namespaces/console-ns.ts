@@ -2469,8 +2469,8 @@ export interface ConsoleNS {
                     title: string;
                     description: string;
                     instructions: {
-                        0: string;
-                        1: string;
+                        upgrade: string;
+                        currentTier: string;
                     };
                 };
                 title: string;
