@@ -86,58 +86,43 @@
         padding: 28px 30px 20px !important;
         background: var(--oxygen-palette-background-paper);
 
-        .trial-expired-features-label {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--oxygen-palette-text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            margin-bottom: 22px;
+        .trial-expired-changes-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--oxygen-palette-text-primary);
+            margin-bottom: 16px;
         }
 
-        .trial-expired-features-list {
+        .trial-expired-changes-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 14px;
             margin-bottom: 24px;
 
-            .trial-expired-feature-item {
+            .trial-expired-change-item {
                 display: flex;
-                align-items: flex-start;
+                align-items: center;
                 gap: 12px;
 
-                .feature-check {
+                .change-icon {
                     flex-shrink: 0;
-                    width: 26px;
-                    height: 26px;
-                    background: linear-gradient(135deg, rgba(var(--oxygen-palette-success-mainChannel) / 0.12), rgba(var(--oxygen-palette-success-mainChannel) / 0.2));
-                    border-radius: 50%;
+                    width: 22px;
+                    height: 22px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    margin-top: 1px;
 
                     svg {
-                        width: 14px;
-                        height: 14px;
-                        color: var(--oxygen-palette-success-main);
+                        width: 16px;
+                        height: 16px;
+                        color: var(--oxygen-palette-text-secondary);
                     }
                 }
 
-                .feature-text {
-                    .feature-name {
-                        font-size: 14px;
-                        font-weight: 600;
-                        color: var(--oxygen-palette-text-primary);
-                        line-height: 1.4;
-                    }
-
-                    .feature-desc {
-                        font-size: 13px;
-                        color: var(--oxygen-palette-text-secondary);
-                        line-height: 1.4;
-                        margin-top: 2px;
-                    }
+                .change-text {
+                    font-size: 14px;
+                    color: var(--oxygen-palette-text-primary);
+                    line-height: 1.4;
                 }
             }
         }
@@ -170,7 +155,7 @@
         align-items: center;
 
         .ui.primary.button {
-            width: 30%;
+            min-width: 220px;
         }
     }
 }

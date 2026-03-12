@@ -32,19 +32,11 @@ interface TrialExpiredModalPropsInterface extends IdentifiableComponentInterface
 }
 
 /**
- * Feature item interface for the expired trial features list.
- */
-interface TrialFeatureItemInterface {
-    name: string;
-    description: string;
-}
-
-/**
- * Check icon SVG component for the feature list items.
+ * Cross icon SVG component for the restriction list items.
  *
- * @returns SVG ReactElement for the check icon.
+ * @returns SVG ReactElement for the cross icon.
  */
-const CheckIcon = (): ReactElement => (
+const CrossIcon = (): ReactElement => (
     <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -53,26 +45,20 @@ const CheckIcon = (): ReactElement => (
         strokeLinecap="round"
         strokeLinejoin="round"
     >
-        <polyline points="20 6 9 17 4 12" />
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
     </svg>
 );
 
 /**
- * Features that are now restricted after trial expiration.
+ * Changes that take effect when moving to the Free plan after trial expiration.
  */
-const EXPIRED_TRIAL_FEATURES: TrialFeatureItemInterface[] = [
-    {
-        description: "Advanced authentication, branding, and more are now restricted",
-        name: "Premium Features Restricted"
-    },
-    {
-        description: "Monthly active user and machine-to-machine token limits have been reduced",
-        name: "Reduced Usage Limits"
-    },
-    {
-        description: "Quotas for applications, social IdP connections, and more have been lowered",
-        name: "Reduced Resource Quotas"
-    }
+const FREE_PLAN_CHANGES: string[] = [
+    "Advanced authentication features are removed",
+    "Branding and theming customizations are disabled",
+    "Monthly active user limits drop to Free plan levels",
+    "Machine-to-machine token limits are reduced",
+    "Application and social IdP connection quotas are lowered"
 ];
 
 /**
@@ -119,32 +105,31 @@ const TrialExpiredModal: FunctionComponent<TrialExpiredModalPropsInterface> = ({
             </div>
 
             <Modal.Content className="trial-expired-modal-body">
-                <div className="trial-expired-features-label">What&apos;s now restricted</div>
-                <div className="trial-expired-features-list">
-                    {EXPIRED_TRIAL_FEATURES.map((feature: TrialFeatureItemInterface) => (
+                <div className="trial-expired-changes-label">
+                    What happens if you continue on the Free plan
+                </div>
+                <div className="trial-expired-changes-list">
+                    { FREE_PLAN_CHANGES.map((change: string, index: number) => (
                         <div
-                            key={feature.name}
-                            className="trial-expired-feature-item"
-                            data-componentid={`${componentId}-feature-${feature.name}`}
+                            key={ change }
+                            className="trial-expired-change-item"
+                            data-componentid={ `${componentId}-change-${index}` }
                         >
-                            <div className="feature-check">
-                                <CheckIcon />
+                            <div className="change-icon">
+                                <CrossIcon />
                             </div>
-                            <div className="feature-text">
-                                <div className="feature-name">{feature.name}</div>
-                                <div className="feature-desc">{feature.description}</div>
-                            </div>
+                            <span className="change-text">{ change }</span>
                         </div>
-                    ))}
+                    )) }
                 </div>
             </Modal.Content>
 
             <Modal.Actions className="trial-expired-modal-actions">
                 <PrimaryButton
-                    onClick={handleUpgrade}
-                    data-componentid={`${componentId}-upgrade-button`}
+                    onClick={ handleUpgrade }
+                    data-componentid={ `${componentId}-upgrade-button` }
                 >
-                    Upgrade Now
+                    Upgrade and Restore Access
                 </PrimaryButton>
             </Modal.Actions>
         </Modal>
