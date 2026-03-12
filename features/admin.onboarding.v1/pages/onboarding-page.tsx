@@ -19,12 +19,13 @@
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import { useRequiredScopes } from "@wso2is/access-control";
+import StartTrialModal from "@wso2is/admin.core.v1/components/modals/start-trial-modal";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import OnboardingWizard from "../components/onboarding-wizard";
@@ -67,8 +68,8 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
     );
 
     const {
-        shouldShowOnboarding,
-        isLoading,
+        // shouldShowOnboarding,
+        // isLoading,
         markOnboardingComplete
     } = useOnboardingStatus();
 
@@ -79,12 +80,14 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         featureConfig?.onboarding?.scopes?.create as string[]
     );
 
+    const [ isStartTrialModalOpen, setIsStartTrialModalOpen ] = useState<boolean>(true);
+
     // Route guard: redirect to home if user shouldn't see onboarding or lacks scopes
-    useEffect(() => {
-        if (!isLoading && (!shouldShowOnboarding || !hasRequiredCreateScopes)) {
-            history.push(AppConstants.getAppHomePath());
-        }
-    }, [ isLoading, shouldShowOnboarding, hasRequiredCreateScopes ]);
+    // useEffect(() => {
+    //     if (!isLoading && (!shouldShowOnboarding || !hasRequiredCreateScopes)) {
+    //         history.push(AppConstants.getAppHomePath());
+    //     }
+    // }, [ isLoading, shouldShowOnboarding, hasRequiredCreateScopes ]);
 
     const handleComplete: (data: OnboardingDataInterface) => void = useCallback(
         (data: OnboardingDataInterface): void => {
@@ -110,9 +113,9 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         history.push(AppConstants.getAppHomePath());
     }, [ markOnboardingComplete ]);
 
-    if (isLoading || !shouldShowOnboarding || !hasRequiredCreateScopes) {
-        return null;
-    }
+    // if (isLoading || !shouldShowOnboarding || !hasRequiredCreateScopes) {
+    //     return null;
+    // }
 
     return (
         <StyledOnboardingPage data-componentid={ componentId }>
@@ -126,7 +129,13 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
                     onSkip={ handleSkip }
                 />
             </ContentArea>
+            <StartTrialModal
+                open={ isStartTrialModalOpen }
+                onClose={ () => setIsStartTrialModalOpen(false) }
+                onStartTrial={ () => setIsStartTrialModalOpen(false) }
+            />
         </StyledOnboardingPage>
+
     );
 };
 

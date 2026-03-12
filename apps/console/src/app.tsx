@@ -206,11 +206,11 @@ export const App = ({
      * Redirect to onboarding page if user should see onboarding.
      */
     useEffect(() => {
-        if (isOnboardingStatusLoading) {
-            return;
-        }
+        // if (isOnboardingStatusLoading) {
+        //     return;
+        // }
 
-        if (shouldShowOnboarding) {
+        // if (shouldShowOnboarding) {
             const onboardingPath: string = AppConstants.getPaths().get("ONBOARDING");
             const currentPath: string = window.location.pathname;
 
@@ -225,8 +225,10 @@ export const App = ({
             if (currentPath !== onboardingPath && !excludedPaths.includes(currentPath)) {
                 history.push(onboardingPath);
             }
-        }
-    }, [ shouldShowOnboarding, isOnboardingStatusLoading ]);
+        // }
+    }, [ 
+        // shouldShowOnboarding, isOnboardingStatusLoading 
+    ]);
 
     /**
      * Set the deployment configs in redux state.

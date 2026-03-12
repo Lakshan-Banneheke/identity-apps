@@ -113,7 +113,8 @@ const StartTrialModal: FunctionComponent<StartTrialModalPropsInterface> = ({
                 </div>
                 <h2 className="start-trial-modal-title">Premium capabilities unlocked!</h2>
                 <p className="start-trial-modal-subtitle">
-                    Get started with more features and higher usage limits on your organization for 30 days. No credit card required.
+                    Get started with more features and higher usage limits on your organization for 30 days. <br />
+                    <b>No credit card required.</b>
                 </p>
             </div>
 
