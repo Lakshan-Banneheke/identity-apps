@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { PrimaryButton } from "@wso2is/react-components";
+import { PrimaryButton, SecondaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Modal } from "semantic-ui-react";
 import "./trial-expired-modal.scss";
@@ -51,14 +51,29 @@ const CrossIcon = (): ReactElement => (
 );
 
 /**
+ * Free plan change item interface for the changes list.
+ */
+interface FreePlanChangeItemInterface {
+    name: string;
+    description: string;
+}
+
+/**
  * Changes that take effect when moving to the Free plan after trial expiration.
  */
-const FREE_PLAN_CHANGES: string[] = [
-    "Advanced authentication features are removed",
-    "Branding and theming customizations are disabled",
-    "Monthly active user limits drop to Free plan levels",
-    "Machine-to-machine token limits are reduced",
-    "Application and social IdP connection quotas are lowered"
+const FREE_PLAN_CHANGES: FreePlanChangeItemInterface[] = [
+    {
+        description: "Advanced features such as authentication and branding are no longer available",
+        name: "Premium Features Removed"
+    },
+    {
+        description: "Reduced monthly active user and machine-to-machine token limits",
+        name: "Lower Usage Limits"
+    },
+    {
+        description: "Quotas for applications, connections, and other resources are reduced, which may disable excess resources",
+        name: "Reduced Resource Quotas"
+    }
 ];
 
 /**
@@ -99,28 +114,34 @@ const TrialExpiredModal: FunctionComponent<TrialExpiredModalPropsInterface> = ({
                 </div>
                 <h2 className="trial-expired-modal-title">Your trial has expired</h2>
                 <p className="trial-expired-modal-subtitle">
-                    Your 30-day free trial has ended. Premium features are now limited. <br />
+                    Your 30-day free trial has ended. Premium capabilities are now limited. <br />
                     <b>Upgrade your plan to restore full access.</b>
                 </p>
             </div>
 
             <Modal.Content className="trial-expired-modal-body">
                 <div className="trial-expired-changes-label">
-                    What happens if you continue on the Free plan
+                    What happens if you continue on the Free Tier
                 </div>
                 <div className="trial-expired-changes-list">
-                    { FREE_PLAN_CHANGES.map((change: string, index: number) => (
+                    { FREE_PLAN_CHANGES.map((change: FreePlanChangeItemInterface, index: number) => (
                         <div
-                            key={ change }
+                            key={ change.name }
                             className="trial-expired-change-item"
                             data-componentid={ `${componentId}-change-${index}` }
                         >
                             <div className="change-icon">
                                 <CrossIcon />
                             </div>
-                            <span className="change-text">{ change }</span>
+                            <div className="change-text">
+                                <div className="change-name">{ change.name }</div>
+                                <div className="change-desc">{ change.description }</div>
+                            </div>
                         </div>
                     )) }
+                </div>
+                <div className="trial-expired-note">
+                    You can upgrade anytime and regain access to all your previous features and resources. Nothing has been deleted.
                 </div>
             </Modal.Content>
 
@@ -129,8 +150,14 @@ const TrialExpiredModal: FunctionComponent<TrialExpiredModalPropsInterface> = ({
                     onClick={ handleUpgrade }
                     data-componentid={ `${componentId}-upgrade-button` }
                 >
-                    Upgrade and Restore Access
+                    Upgrade Your Plan
                 </PrimaryButton>
+                <SecondaryButton
+                    onClick={ onClose }
+                    data-componentid={ `${componentId}-continue-free-button` }
+                >
+                    Continue on Free Tier
+                </SecondaryButton>
             </Modal.Actions>
         </Modal>
     );
