@@ -114,7 +114,7 @@ const TrialExpiredModal: FunctionComponent<TrialExpiredModalPropsInterface> = ({
                 </div>
                 <h2 className="trial-expired-modal-title">Your trial has expired</h2>
                 <p className="trial-expired-modal-subtitle">
-                    Your 30-day free trial has ended. Premium capabilities are now limited. <br />
+                    Your 30-day free trial has ended. <br />
                     <b>Upgrade your plan to restore full access.</b>
                 </p>
             </div>
@@ -158,6 +158,11 @@ const TrialExpiredModal: FunctionComponent<TrialExpiredModalPropsInterface> = ({
                 >
                     Continue on Free Tier
                 </SecondaryButton>
+                <p className="trial-expired-support-note">
+                    Need more time? Contact{ " " }
+                    <a href="mailto:asgardeo-help@wso2.com">asgardeo-help@wso2.com</a>
+                    { " " }for a limited trial extension.
+                </p>
             </Modal.Actions>
         </Modal>
     );
