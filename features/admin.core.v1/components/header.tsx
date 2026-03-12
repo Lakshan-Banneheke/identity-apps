@@ -330,6 +330,19 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 </Menu>
             </>
         ),
+        <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+            <Chip
+                className="header-trial-days-chip"
+                label={
+                    <span className="header-trial-days-label">
+                        <span className="header-trial-days-count">Trial: 25 days left</span>
+                    </span>
+                }
+                size="small"
+                variant="outlined"
+                data-componentid="trial-days-remaining-chip"
+            />
+        </Show>,
         window["AppUtils"].getConfig().docSiteUrl && (
             <Button
                 color="inherit"
@@ -441,24 +454,24 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 </Menu>
             </>
         ),
-        tierName === TenantTier.FREE &&
-            !isPrivilegedUser &&
-            window["AppUtils"].getConfig().extensions.upgradeButtonEnabled && (
-            <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
-                <Button
-                    className="header-upgrade-btn"
-                    color="secondary"
-                    variant="outlined"
-                    startIcon={ <DiamondIcon /> }
-                    onClick={ () => setShowStartTrialModal(true) }
-                    data-componentid="start-trial-button"
-                >
-                    <span className="header-upgrade-btn-text">
-                        Start Trial
-                    </span>
-                </Button>
-            </Show>
-        ),
+        // tierName === TenantTier.FREE &&
+        //     !isPrivilegedUser &&
+        //     window["AppUtils"].getConfig().extensions.upgradeButtonEnabled && (
+        //     <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+        //         <Button
+        //             className="header-upgrade-btn"
+        //             color="secondary"
+        //             variant="outlined"
+        //             startIcon={ <DiamondIcon /> }
+        //             onClick={ () => setShowStartTrialModal(true) }
+        //             data-componentid="start-trial-button"
+        //         >
+        //             <span className="header-upgrade-btn-text">
+        //                 Start Trial
+        //             </span>
+        //         </Button>
+        //     </Show>
+        // ),
         tierName === TenantTier.FREE &&
             billingPortalURL &&
             !isPrivilegedUser &&

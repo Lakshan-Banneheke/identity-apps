@@ -161,3 +161,37 @@ $contact-support-subtitle-margin-top: 4px !important;
     display: inline-block;
     margin-top: 4px;
 }
+
+// --- Trial days remaining chip styles ---
+
+$trial-days-chip-border-color: rgba(221, 182, 56, 0.4);
+$trial-days-chip-background: rgba(221, 182, 56, 0.06);
+$trial-days-chip-text-color: #9E8A2B;
+$trial-days-chip-font-size: 12px;
+$trial-days-chip-font-weight: 500;
+$trial-days-chip-count-font-weight: 700;
+$trial-days-chip-count-color: #B8972E;
+
+.header-trial-days-chip {
+    border-color: $trial-days-chip-border-color;
+    background: $trial-days-chip-background;
+    height: 28px;
+    cursor: default;
+
+    .MuiChip-label {
+        padding: 0 10px;
+    }
+
+    .header-trial-days-label {
+        font-size: $trial-days-chip-font-size;
+        font-weight: $trial-days-chip-font-weight;
+        color: $trial-days-chip-text-color;
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+
+        .header-trial-days-count {
+            font-weight: $trial-days-chip-count-font-weight;
+            color: $trial-days-chip-count-color;
+        }
+    }
+}
