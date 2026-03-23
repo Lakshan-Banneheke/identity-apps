@@ -19,6 +19,7 @@
 import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
+import Box from "@oxygen-ui/react/Box";
 import Link from "@oxygen-ui/react/Link/Link";
 import Typography from "@oxygen-ui/react/Typography";
 import { GearIcon } from "@oxygen-ui/react-icons";
@@ -65,6 +66,7 @@ import { DynamicApplicationContextCard } from "./dynamic-application-context-car
 import { FeatureCarousel } from "./new-feature-announcement/new-feature-announcement";
 import { getGettingStartedCardIllustrations } from "../configs/ui";
 import HomeConstants from "../constants/home-constants";
+import { useTrialStatus } from "../hooks/use-trial-status";
 
 /**
  * Proptypes for the overview page component.
@@ -107,6 +109,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
     });
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+    const { shouldShowTrialBanner } = useTrialStatus();
 
     const showFeatureAnnouncementBanner: boolean = !homeFeatureConfig?.disabledFeatures?.includes(
         HomeConstants.FEATURE_DICTIONARY.FEATURE_ANNOUNCEMENT
@@ -594,6 +597,61 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                     }
                 </Heading>
             </div>
+
+            { shouldShowTrialBanner && (
+                <Box
+                    sx={ {
+                        alignItems: "center",
+                        backgroundColor: "#f5f5f5",
+                        borderRadius: 1,
+                        display: "flex",
+                        gap: 1.5,
+                        mb: 2,
+                        mt: 1,
+                        px: 2.5,
+                        py: 1.5
+                    } }
+                    data-componentid="free-trial-banner"
+                >
+                    <Box
+                        sx={ {
+                            border: "1px solid #ccc",
+                            borderRadius: 0.5,
+                            color: "#666",
+                            flexShrink: 0,
+                            fontSize: "14px",
+                            height: 24,
+                            lineHeight: "24px",
+                            textAlign: "center",
+                            width: 24
+                        } }
+                    >
+                        { "\u2630" }
+                    </Box>
+                    <Typography variant="body2" color="text.secondary">
+                        Thank you for signing up for Asgardeo! You have a free trial to experiment
+                        with{ " " }
+                        <Link
+                            href="https://wso2.com/asgardeo/pricing/"
+                            target="_blank"
+                            rel="noreferrer"
+                            underline="always"
+                        >
+                            features that are not in the Free plan
+                        </Link>
+                        . Like what you&apos;re seeing? Please enter your{ " " }
+                        <Link
+                            href="https://console.asgardeo.io/t/carbon.super/billing"
+                            target="_blank"
+                            rel="noreferrer"
+                            underline="always"
+                        >
+                            billing information here
+                        </Link>
+                        .
+                    </Typography>
+                </Box>
+            ) }
 
             { isAdminNoticeEnabled && adminNoticeEnabled && (
                 <AdminNotice
