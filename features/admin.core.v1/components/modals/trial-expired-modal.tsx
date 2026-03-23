@@ -32,11 +32,11 @@ interface TrialExpiredModalPropsInterface extends IdentifiableComponentInterface
 }
 
 /**
- * Cross icon SVG component for the restriction list items.
+ * Check icon SVG component for the benefit list items.
  *
- * @returns SVG ReactElement for the cross icon.
+ * @returns SVG ReactElement for the check icon.
  */
-const CrossIcon = (): ReactElement => (
+const CheckIcon = (): ReactElement => (
     <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -45,34 +45,33 @@ const CrossIcon = (): ReactElement => (
         strokeLinecap="round"
         strokeLinejoin="round"
     >
-        <line x1="18" y1="6" x2="6" y2="18" />
-        <line x1="6" y1="6" x2="18" y2="18" />
+        <polyline points="20 6 9 17 4 12" />
     </svg>
 );
 
 /**
- * Free plan change item interface for the changes list.
+ * Upgrade benefit item interface for the benefits list.
  */
-interface FreePlanChangeItemInterface {
+interface UpgradeBenefitItemInterface {
     name: string;
     description: string;
 }
 
 /**
- * Changes that take effect when moving to the Free plan after trial expiration.
+ * Benefits that users get back by upgrading to a paid plan.
  */
-const FREE_PLAN_CHANGES: FreePlanChangeItemInterface[] = [
+const UPGRADE_BENEFITS: UpgradeBenefitItemInterface[] = [
     {
-        description: "Advanced features such as authentication and branding are no longer available",
-        name: "Premium Features Removed"
+        description: "Restore premium authentication, branding, and other advanced capabilities",
+        name: "Premium Feature Access"
     },
     {
-        description: "Reduced monthly active user and machine-to-machine token limits",
-        name: "Lower Usage Limits"
+        description: "Get back expanded monthly active user and machine-to-machine token limits",
+        name: "Higher Usage Limits"
     },
     {
-        description: "Quotas for applications, connections, and other resources are reduced, which may disable excess resources",
-        name: "Reduced Resource Quotas"
+        description: "Increased quotas for applications, connections, and other resources",
+        name: "Higher Resource Quotas"
     }
 ];
 
@@ -112,36 +111,38 @@ const TrialExpiredModal: FunctionComponent<TrialExpiredModalPropsInterface> = ({
                     <span className="badge-dot" />
                     Trial Expired
                 </div>
-                <h2 className="trial-expired-modal-title">Your trial has expired</h2>
+                <h2 className="trial-expired-modal-title">Your trial has ended — what&apos;s next?</h2>
                 <p className="trial-expired-modal-subtitle">
-                    Your 30-day free trial has ended. <br />
-                    <b>Upgrade your plan to restore full access.</b>
+                    Your organization is now on the <b>Free plan</b>. You can keep building, but some
+                    capabilities from your trial are no longer active. <br />
+                    <b>Upgrade to pick up right where you left off.</b>
                 </p>
             </div>
 
             <Modal.Content className="trial-expired-modal-body">
                 <div className="trial-expired-changes-label">
-                    What happens if you continue on the Free Tier
+                    What you get back
                 </div>
                 <div className="trial-expired-changes-list">
-                    { FREE_PLAN_CHANGES.map((change: FreePlanChangeItemInterface, index: number) => (
+                    { UPGRADE_BENEFITS.map((benefit: UpgradeBenefitItemInterface, index: number) => (
                         <div
-                            key={ change.name }
+                            key={ benefit.name }
                             className="trial-expired-change-item"
-                            data-componentid={ `${componentId}-change-${index}` }
+                            data-componentid={ `${componentId}-benefit-${index}` }
                         >
-                            <div className="change-icon">
-                                <CrossIcon />
+                            <div className="change-check">
+                                <CheckIcon />
                             </div>
                             <div className="change-text">
-                                <div className="change-name">{ change.name }</div>
-                                <div className="change-desc">{ change.description }</div>
+                                <div className="change-name">{ benefit.name }</div>
+                                <div className="change-desc">{ benefit.description }</div>
                             </div>
                         </div>
                     )) }
                 </div>
                 <div className="trial-expired-note">
-                    You can upgrade anytime and regain access to all your previous features and resources. Nothing has been deleted.
+                    Your data and configurations are completely safe — nothing has been deleted.
+                    Upgrade anytime to restore full access.
                 </div>
             </Modal.Content>
 
@@ -159,8 +160,8 @@ const TrialExpiredModal: FunctionComponent<TrialExpiredModalPropsInterface> = ({
                     Continue on Free Tier
                 </SecondaryButton>
                 <p className="trial-expired-support-note">
-                    Need more time? Contact{ " " }
-                    <a href="mailto:asgardeo-help@wso2.com">asgardeo-help@wso2.com</a>
+                    Need more time? { " " }
+                    <a href="mailto:asgardeo-help@wso2.com">Contact us</a>
                     { " " }for a limited trial extension.
                 </p>
             </Modal.Actions>

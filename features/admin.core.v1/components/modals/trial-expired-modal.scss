@@ -104,19 +104,21 @@
                 align-items: flex-start;
                 gap: 8px;
 
-                .change-icon {
+                .change-check {
                     flex-shrink: 0;
-                    width: 22px;
-                    height: 22px;
+                    width: 26px;
+                    height: 26px;
+                    background: linear-gradient(135deg, rgba(var(--oxygen-palette-success-mainChannel) / 0.12), rgba(var(--oxygen-palette-success-mainChannel) / 0.2));
+                    border-radius: 50%;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     margin-top: 1px;
 
                     svg {
-                        width: 16px;
-                        height: 16px;
-                        color: var(--oxygen-palette-text-secondary);
+                        width: 14px;
+                        height: 14px;
+                        color: var(--oxygen-palette-success-main);
                     }
                 }
 
