@@ -53,7 +53,7 @@ import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/featur
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
-import { useTrialDetails } from "@wso2is/admin.tenants.v1/hooks/use-trial-details";
+import FreeTrialBanner from "@wso2is/admin.tenants.v1/components/free-trial-banner";
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Popup, Text } from "@wso2is/react-components";
@@ -108,7 +108,6 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         return state?.config?.ui?.features?.loginAndRegistration;
     });
 
-    const { tenantHasTrial, daysRemaining } = useTrialDetails();
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
@@ -599,51 +598,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                 </Heading>
             </div>
 
-            { tenantHasTrial && (
-                <Box
-                    sx={ {
-                        "@keyframes fadeIn": {
-                            from: { opacity: 0, transform: "translateY(-8px)" },
-                            to: { opacity: 1, transform: "translateY(0)" }
-                        },
-                        alignItems: "center",
-                        animation: "fadeIn 0.3s ease-out forwards",
-                        backgroundColor: "#f5f5f5",
-                        borderRadius: 1,
-                        display: "flex",
-                        gap: 1.5,
-                        mb: 2,
-                        mt: 1,
-                        px: 2.5,
-                        py: 1.5
-                    } }
-                    data-componentid="free-trial-banner"
-                >
-                    <Typography variant="body2" color="text.secondary">
-                        Your free trial is active! You have { " " }
-                        <strong>{ daysRemaining }</strong>{ " " }
-                        { daysRemaining === 1 ? "day" : "days" } days to explore{ " " }
-                        <Link
-                            href="https://wso2.com/asgardeo/pricing/"
-                            target="_blank"
-                            rel="noreferrer"
-                            underline="always"
-                        >
-                            capabilities beyond the Free plan
-                        </Link>
-                        . Enjoying the experience? { " " }
-                        <Link
-                            href="https://console.asgardeo.io/t/carbon.super/billing"
-                            target="_blank"
-                            rel="noreferrer"
-                            underline="always"
-                        >
-                            Upgrade anytime.
-                        </Link>
-                        .
-                    </Typography>
-                </Box>
-            ) }
+            <FreeTrialBanner />
 
             { isAdminNoticeEnabled && adminNoticeEnabled && (
                 <AdminNotice
