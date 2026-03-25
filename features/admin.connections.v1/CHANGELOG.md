@@ -1,5 +1,33 @@
 # @wso2is/admin.connections.v1
 
+## 2.36.29
+
+### Patch Changes
+
+- [#9926](https://github.com/wso2/identity-apps/pull/9926) [`e8a2f61f2243d671638005e41b499a86c0c78403`](https://github.com/wso2/identity-apps/commit/e8a2f61f2243d671638005e41b499a86c0c78403) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add pagination support in connected apps view
+
+- Updated dependencies [[`e8a2f61f2243d671638005e41b499a86c0c78403`](https://github.com/wso2/identity-apps/commit/e8a2f61f2243d671638005e41b499a86c0c78403)]:
+  - @wso2is/admin.connections.v1@2.36.29
+  - @wso2is/admin.console-settings.v1@2.26.23
+  - @wso2is/admin.applications.v1@2.42.1
+  - @wso2is/admin.core.v1@2.55.12
+  - @wso2is/admin.roles.v2@2.27.359
+
+## 2.36.28
+
+### Patch Changes
+
+- [#9741](https://github.com/wso2/identity-apps/pull/9741) [`5a1254e3c6604f51b6c92567bcb18d5f67267fbf`](https://github.com/wso2/identity-apps/commit/5a1254e3c6604f51b6c92567bcb18d5f67267fbf) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Enable trusted token issuer advanced setting page with unique lookup attributes
+
+- Updated dependencies [[`b5a62b142ae0c817afb50a4b5418bd6d9d2c4f21`](https://github.com/wso2/identity-apps/commit/b5a62b142ae0c817afb50a4b5418bd6d9d2c4f21), [`5a1254e3c6604f51b6c92567bcb18d5f67267fbf`](https://github.com/wso2/identity-apps/commit/5a1254e3c6604f51b6c92567bcb18d5f67267fbf), [`fe26e130e7b52a2075c1cd31ee881497a947b4f5`](https://github.com/wso2/identity-apps/commit/fe26e130e7b52a2075c1cd31ee881497a947b4f5)]:
+  - @wso2is/admin.applications.v1@2.42.0
+  - @wso2is/admin.connections.v1@2.36.28
+  - @wso2is/admin.extensions.v1@2.41.0
+  - @wso2is/i18n@2.38.0
+  - @wso2is/admin.console-settings.v1@2.26.22
+  - @wso2is/admin.core.v1@2.55.11
+  - @wso2is/admin.roles.v2@2.27.358
+
 ## 2.36.27
 
 ### Patch Changes
