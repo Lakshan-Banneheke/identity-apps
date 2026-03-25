@@ -1,0 +1,89 @@
+/**
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import {
+    useGetCurrentOrganizationType
+} from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { FeatureAccessConfigInterface } from "@wso2is/core/models";
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
+import { useGetTrialDetails } from "../api/get-trial-details";
+import TenantConstants from "../constants/tenant-constants";
+
+/**
+ * Return type for the useTrialDetails hook.
+ */
+interface UseTrialDetailsReturn {
+    tenantHasTrial: boolean;
+    daysRemaining: number;
+    isLoading: boolean;
+}
+
+/**
+ * Hook that fetches trial details from the tenant trial endpoint
+ * and derives whether the tenant has an active trial and how many days remain.
+ *
+ * @returns Trial state and days remaining.
+ */
+export const useTrialDetails = (): UseTrialDetailsReturn => {
+    const featureConfig: FeatureConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features
+    );
+    const tenantsFeatureConfig: FeatureAccessConfigInterface = featureConfig?.tenants;
+
+    const { isFirstLevelOrganization } = useGetCurrentOrganizationType();
+    const isFirstLevelOrg: boolean = isFirstLevelOrganization();
+
+    const shouldFetch: boolean =
+        !!tenantsFeatureConfig?.enabled &&
+        isFeatureEnabled(tenantsFeatureConfig, TenantConstants.FEATURE_DICTIONARY.TRIAL_ACTIVATION) &&
+        isFirstLevelOrg;
+
+    const {
+        data: trialData,
+        isLoading: isTrialLoading,
+        error
+    } = useGetTrialDetails(shouldFetch);
+
+    const tenantHasTrial: boolean = useMemo((): boolean => {
+        if (!shouldFetch || isTrialLoading) {
+            return false;
+        }
+
+        if (error) {
+            return false;
+        }
+
+        return trialData?.daysRemaining !== undefined && trialData?.daysRemaining !== null;
+    }, [ shouldFetch, isTrialLoading, error, trialData ]);
+
+    const daysRemaining: number = useMemo((): number => {
+        return trialData?.daysRemaining ?? 0;
+    }, [ trialData ]);
+
+    const isLoading: boolean = !featureConfig || (shouldFetch && isTrialLoading);
+
+    return {
+        daysRemaining,
+        isLoading,
+        tenantHasTrial
+    };
+};
