@@ -16,8 +16,10 @@
  * under the License.
  */
 
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import {
     useGetCurrentOrganizationType
 } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -49,10 +51,12 @@ export const useTrialDetails = (): UseTrialDetailsReturn => {
     );
     const tenantsFeatureConfig: FeatureAccessConfigInterface = featureConfig?.tenants;
 
+    const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
     const { isFirstLevelOrganization } = useGetCurrentOrganizationType();
     const isFirstLevelOrg: boolean = isFirstLevelOrganization();
 
     const shouldFetch: boolean =
+        saasFeatureStatus !== FeatureStatus.DISABLED &&
         !!tenantsFeatureConfig?.enabled &&
         isFeatureEnabled(tenantsFeatureConfig, TenantConstants.FEATURE_DICTIONARY.TRIAL_ACTIVATION) &&
         isFirstLevelOrg;
