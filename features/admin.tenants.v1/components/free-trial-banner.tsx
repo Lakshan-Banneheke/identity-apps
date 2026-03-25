@@ -17,6 +17,7 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
 import Link from "@oxygen-ui/react/Link/Link";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -57,18 +58,18 @@ const FreeTrialBanner: FunctionComponent<FreeTrialBannerPropsInterface> = (
                 },
                 alignItems: "center",
                 animation: "fadeIn 0.3s ease-out forwards",
-                backgroundColor: "#f5f5f5",
+                backgroundColor: "#f0f0f0",
                 borderRadius: 1,
                 display: "flex",
-                gap: 1.5,
+                justifyContent: "space-between",
                 mb: 2,
                 mt: 1,
                 px: 2.5,
-                py: 1.5
+                py: 2
             } }
             data-componentid={ componentId }
         >
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body1" color="text.secondary">
                 You&apos;re on a free trial with { " " }
                 <strong>{ daysRemaining }</strong>{ " " }
                 { daysRemaining === 1 ? "day" : "days" } remaining. { " " }
@@ -83,6 +84,15 @@ const FreeTrialBanner: FunctionComponent<FreeTrialBannerPropsInterface> = (
                 </Link>
                 { " " }whenever you&apos;re ready.
             </Typography>
+            <Button
+                variant="contained"
+                size="small"
+                sx={ { ml: 2, mr: 1, whiteSpace: "nowrap" } }
+                onClick={ () => window.open("https://wso2.com/asgardeo/pricing/", "_blank", "noopener,noreferrer") }
+                data-componentid={ `${componentId}-view-plans-button` }
+            >
+                View Plans
+            </Button>
         </Box>
     );
 };
