@@ -336,6 +336,10 @@ export interface ConsoleNS {
             action: string;
             suffix: string;
         };
+        featureTags: {
+            enterprise: string;
+            pyg: string;
+        };
         upgrade: string;
     };
     develop: {

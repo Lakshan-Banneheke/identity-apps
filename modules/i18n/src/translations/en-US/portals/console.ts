@@ -385,6 +385,10 @@ export const console: ConsoleNS = {
             action: "Upgrade your plan",
             suffix: "to get access."
         },
+        featureTags: {
+            enterprise: "Enterprise",
+            pyg: "PYG"
+        },
         upgrade: "Upgrade",
         validations: {
             inSecureURL: {

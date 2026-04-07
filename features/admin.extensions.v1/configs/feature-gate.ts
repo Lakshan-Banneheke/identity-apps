@@ -51,12 +51,14 @@ export const featureGateConfig: FeatureGateInterface  = {
             status: FeatureStatus.DISABLED
         },
         smsTemplates: {
-            status: FeatureStatus.DEFAULT
+            status: FeatureStatus.DEFAULT,
+            tags: []
         },
         status: FeatureStatus.DEFAULT,
         userStores: {
             remoteUserStores: {
-                status: FeatureStatus.DEFAULT
+                status: FeatureStatus.DEFAULT,
+                tags: []
             }
         }
     }

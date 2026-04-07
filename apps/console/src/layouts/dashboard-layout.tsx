@@ -21,7 +21,7 @@ import AppShell from "@oxygen-ui/react/AppShell";
 import Navbar, { NavbarItems } from "@oxygen-ui/react/Navbar";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Snackbar from "@oxygen-ui/react/Snackbar";
-import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import { FeatureStatus, FeatureTags, useCheckFeatureStatus, useCheckFeatureTags } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
 import Header from "@wso2is/admin.core.v1/components/header";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
@@ -36,8 +36,10 @@ import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { CommonUtils as ConsoleCommonUtils } from "@wso2is/admin.core.v1/utils/common-utils";
 import { RouteUtils } from "@wso2is/admin.core.v1/utils/route-utils";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import { FeatureTagLabel } from "@wso2is/admin.feature-gate.v1/models/feature-tag";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
 import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
@@ -133,6 +135,19 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
     );
 
     const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+
+    const smsTemplatesFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.SMS_TEMPLATES_CUSTOMIZATION
+    );
+    const smsTemplatesFeatureTags: string[] = useCheckFeatureTags(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.SMS_TEMPLATES_CUSTOMIZATION
+    );
+    const remoteUserStoresFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.USER_STORES_REMOTE_USER_STORES
+    );
+    const remoteUserStoresFeatureTags: string[] = useCheckFeatureTags(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.USER_STORES_REMOTE_USER_STORES
+    );
 
     const [ selectedRoute, setSelectedRoute ] = useState<
         RouteInterface | ChildRouteInterface
@@ -322,6 +337,34 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
         return FeatureStatusLabel[featureFlag?.flag];
     };
 
+    const resolveFeatureTagLabel = (routeId: string): string | null => {
+
+        let featureTags: string[] | undefined;
+        let featureStatus: FeatureStatus | undefined;
+
+        if (routeId === "smsTemplates") {
+            featureTags = smsTemplatesFeatureTags;
+            featureStatus = smsTemplatesFeatureStatus;
+        } else if (routeId === "userStores") {
+            featureTags = remoteUserStoresFeatureTags;
+            featureStatus = remoteUserStoresFeatureStatus;
+        }
+
+        if (!featureTags || featureStatus === FeatureStatus.ENABLED) {
+            return null;
+        }
+
+        if (featureTags.includes(FeatureTags.PYG)) {
+            return FeatureTagLabel.PYG;
+        }
+
+        if (featureTags.includes(FeatureTags.ENTERPRISE)) {
+            return FeatureTagLabel.ENTERPRISE;
+        }
+
+        return null;
+    };
+
     const generateNavbarItems = (): NavbarItems[] => {
         const categorizedRoutes: CategorizedRouteInterface = {};
 
@@ -349,6 +392,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                 return {
                     items: routes.map((route: NavRouteInterface) => {
                         const routeFlag: string = resolveFeatureFlag(route.id, route.featureFlagKey);
+                        const featureTagLabel: string | null = resolveFeatureTagLabel(route.id);
 
                         return {
                             "data-componentid": `side-panel-items-${ kebabCase(route.id) }`,
@@ -362,6 +406,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                             items: route.items?.map((subRoute: NavRouteInterface) => {
 
                                 const subRouteFlag: string = resolveFeatureFlag(subRoute.id, subRoute.featureFlagKey);
+                                const subFeatureTagLabel: string | null = resolveFeatureTagLabel(subRoute.id);
 
                                 return {
                                     "data-componentid": `side-panel-items-${ kebabCase(subRoute.id) }`,
@@ -374,13 +419,13 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                                     label: t(subRoute.name),
                                     onClick: () => history.push(subRoute.path),
                                     selected: subRoute.selected ?? selectedRoute?.path === subRoute.path,
-                                    tag: t(subRouteFlag)
+                                    tag: t(subFeatureTagLabel ?? subRouteFlag)
                                 };
                             }),
                             label: t(route.name),
                             onClick: () => history.push(route.path),
                             selected: route.selected ?? isRouteActive(route.path),
-                            tag: t(routeFlag)
+                            tag: t(featureTagLabel ?? routeFlag)
                         };
                     })
                 };

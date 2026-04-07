@@ -56,7 +56,9 @@ export enum FeatureStatus {
 }
 
 export enum FeatureTags {
+    ENTERPRISE = "enterprise",
     PREMIUM = "premium",
+    PYG = "pyg",
 }
 
 export interface FeatureGateInterface {
@@ -92,12 +94,14 @@ export interface FeatureGateInterface {
             status: FeatureStatus
         },
         smsTemplates: {
-            status: FeatureStatus
+            status: FeatureStatus,
+            tags: string[]
         },
         status: FeatureStatus,
         userStores: {
             remoteUserStores: {
-                status: FeatureStatus
+                status: FeatureStatus,
+                tags: string[]
             }
         }
     }
