@@ -16,11 +16,18 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FunctionComponent, ReactElement } from "react";
+
 /**
- * Component IDs for data-componentid attributes.
+ * Extension point for the wizard shown once a tenant's trial has ended.
+ *
+ * No-op in the base product, since trials are a deployment concern. Deployments that run a
+ * trial pipeline override this file with their own wizard, driving it off the state exposed
+ * by `useTrialExpiryWizard` in `@wso2is/admin.subscription.v1`.
+ *
+ * @returns Nothing.
  */
-export const TrialExpiryComponentIds: Record<string, string> = {
-    CHANGES_STEP: "trial-expiry-changes-step",
-    UPGRADE_STEP: "trial-expiry-upgrade-step",
-    WIZARD: "trial-expiry-wizard"
-};
+const TrialExpiryWizard: FunctionComponent<IdentifiableComponentInterface> = (): ReactElement => null;
+
+export default TrialExpiryWizard;

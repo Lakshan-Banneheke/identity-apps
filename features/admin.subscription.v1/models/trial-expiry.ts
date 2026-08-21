@@ -16,46 +16,12 @@
  * under the License.
  */
 
-import { ComponentType } from "react";
-
 /**
  * Steps of the trial expiry wizard.
  */
 export enum TrialExpiryStep {
     CHANGES = 0,
     UPGRADE = 1
-}
-
-/**
- * How the body of a summary card is laid out.
- */
-export enum TrialExpiryCardVariant {
-    LIST = "list",
-    PARAGRAPHS = "paragraphs"
-}
-
-/**
- * Palette tone used for a summary card's icon tile.
- */
-export type TrialExpiryCardTone = "success" | "warning" | "info";
-
-export interface TrialExpirySummaryCardInterface {
-    /**
-     * i18n key of the lead-in paragraph rendered above the items, if the card has one.
-     */
-    descriptionKey?: string;
-    icon: ComponentType<{ size?: number }>;
-    /**
-     * i18n keys of the card's list items or paragraphs, in display order.
-     */
-    itemKeys: string[];
-    /**
-     * Identifies the card in React keys and component IDs.
-     */
-    key: string;
-    titleKey: string;
-    tone: TrialExpiryCardTone;
-    variant: TrialExpiryCardVariant;
 }
 
 /**

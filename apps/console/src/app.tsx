@@ -43,10 +43,10 @@ import {
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
+import TrialExpiryWizard from "@wso2is/admin.extensions.v1/components/subscription/trial-expiry/trial-expiry-wizard";
 import { featureGateConfig } from "@wso2is/admin.extensions.v1/configs/feature-gate";
 import useGetAllFeatures from "@wso2is/admin.feature-gate.v1/api/use-get-all-features";
 import { useOnboardingStatus } from "@wso2is/admin.onboarding.v1/hooks/use-onboarding-status";
-import TrialExpiryWizard from "@wso2is/admin.subscription.v1/components/trial-expiry-wizard";
 import TrialProvider from "@wso2is/admin.subscription.v1/providers/trial-provider";
 import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
