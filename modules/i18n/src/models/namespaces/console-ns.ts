@@ -408,57 +408,10 @@ export interface ConsoleNS {
                 previous: string;
                 stayOnFree: string;
             };
-            changes: {
-                title: string;
-                subtitle: string;
-                staysOnFree: {
-                    title: string;
-                    items: {
-                        monthlyUsers: string;
-                        m2mTokens: string;
-                        agentIdTokens: string;
-                        applications: string;
-                        organizations: string;
-                        socialLogin: string;
-                    };
-                };
-                nowDisabled: {
-                    title: string;
-                    description: string;
-                    items: {
-                        applications: string;
-                        organizations: string;
-                        enterpriseConnections: string;
-                        preFlowExtensions: string;
-                        webhooks: string;
-                        remoteUserstores: string;
-                    };
-                };
-                nothingDeleted: {
-                    title: string;
-                    items: {
-                        dataPreserved: string;
-                        continueAnytime: string;
-                        resourcesStayDisabled: string;
-                    };
-                };
-            };
             upgrade: {
-                title: string;
-                subtitle: string;
                 offer: {
-                    title: string;
-                    pricing: string;
                     action: string;
                     viewPlansAction: string;
-                    features: {
-                        monthlyActiveUsers: string;
-                        agentIdTokens: string;
-                        enterpriseSso: string;
-                        m2mTokens: string;
-                        unlimitedApplications: string;
-                        customDomains: string;
-                    };
                 };
             };
         };

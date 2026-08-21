@@ -17,4 +17,4 @@
  */
 
 export * from "./component-ids";
-export * from "./trial-expiry-content";
+export * from "./trial-expiry-layout";

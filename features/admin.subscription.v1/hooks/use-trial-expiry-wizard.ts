@@ -41,10 +41,6 @@ interface UseTrialExpiryWizardReturn {
      */
     pricingUrl: string;
     /**
-     * Name of the tier the tenant was trialing, e.g. "Growth".
-     */
-    tierName: string;
-    /**
      * Destination for the upgrade call to action. Resolves to the billing portal upgrade
      * URL when self-serve upgrades are enabled, and to the contact-us URL otherwise.
      */
@@ -71,10 +67,6 @@ export const useTrialExpiryWizard = (): UseTrialExpiryWizardReturn => {
     const pricingUrl: string = useSelector(
         (state: AppState): string =>
             (state?.config?.deployment?.extensions as { pricingURL?: string })?.pricingURL ?? "https://wso2.com"
-    );
-    const tierName: string = useSelector(
-        (state: AppState) =>
-            ((state?.config?.deployment?.extensions?.trial as { tierName?: string })?.tierName) ?? "Paid"
     );
     const upgradeButtonEnabled: boolean = useSelector(
         (state: AppState): boolean =>
@@ -116,7 +108,6 @@ export const useTrialExpiryWizard = (): UseTrialExpiryWizardReturn => {
         goToPreviousStep,
         isOpen: showTrialExpiryNotice,
         pricingUrl,
-        tierName,
         upgradeUrl
     };
 };

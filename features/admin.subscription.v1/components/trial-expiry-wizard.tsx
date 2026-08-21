@@ -21,10 +21,15 @@ import DialogTitle from "@oxygen-ui/react/DialogTitle";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useCallback } from "react";
-import { useTranslation } from "react-i18next";
 import { TrialExpiryComponentIds } from "../constants";
+import { useTrialExpiryContent } from "../hooks/use-trial-expiry-content";
 import { useTrialExpiryWizard } from "../hooks/use-trial-expiry-wizard";
-import { TrialExpiryStep } from "../models/trial-expiry";
+import {
+    TrialExpiryChangesContentInterface,
+    TrialExpiryContentInterface,
+    TrialExpiryStep,
+    TrialExpiryUpgradeContentInterface
+} from "../models/trial-expiry";
 import TrialExpiryChangesStep from "./steps/trial-expiry-changes-step";
 import TrialExpiryUpgradeStep from "./steps/trial-expiry-upgrade-step";
 
@@ -36,6 +41,9 @@ type TrialExpiryWizardPropsInterface = IdentifiableComponentInterface;
 /**
  * Two step wizard shown once the tenant's trial has ended. The first step explains what
  * changed on the downgrade to the free plan and the second offers the upgrade path back.
+ *
+ * Only the layout lives here: every string the wizard shows, the offered tier included, comes from
+ * the trial extension of the deployment config.
  *
  * Neither the escape key nor a backdrop click dismisses the dialog, so it is closed only
  * through an explicit action: Close on the first step, or Stay on free on the second.
@@ -50,8 +58,6 @@ const TrialExpiryWizard: FunctionComponent<TrialExpiryWizardPropsInterface> = (
         ["data-componentid"]: componentId = TrialExpiryComponentIds.WIZARD
     } = props;
 
-    const { t } = useTranslation();
-
     const {
         closeWizard,
         currentStep,
@@ -59,17 +65,16 @@ const TrialExpiryWizard: FunctionComponent<TrialExpiryWizardPropsInterface> = (
         goToPreviousStep,
         isOpen,
         pricingUrl,
-        tierName,
         upgradeUrl
     } = useTrialExpiryWizard();
 
+    const content: TrialExpiryContentInterface = useTrialExpiryContent();
+
     const isUpgradeStep: boolean = currentStep === TrialExpiryStep.UPGRADE;
-    const titleKey: string = isUpgradeStep
-        ? "console:common.trialExpiry.upgrade.title"
-        : "console:common.trialExpiry.changes.title";
-    const subtitleKey: string = isUpgradeStep
-        ? "console:common.trialExpiry.upgrade.subtitle"
-        : "console:common.trialExpiry.changes.subtitle";
+    const changesContent: TrialExpiryChangesContentInterface = content?.changes;
+    const upgradeContent: TrialExpiryUpgradeContentInterface = content?.upgrade;
+    const stepContent: TrialExpiryChangesContentInterface | TrialExpiryUpgradeContentInterface =
+        isUpgradeStep ? upgradeContent : changesContent;
 
     const handleClose: (_event: object, _reason: string) => void = useCallback(
         (_event: object, reason: string): void => {
@@ -82,7 +87,7 @@ const TrialExpiryWizard: FunctionComponent<TrialExpiryWizardPropsInterface> = (
         [ closeWizard ]
     );
 
-    if (!isOpen) {
+    if (!isOpen || !changesContent || !upgradeContent) {
         return null;
     }
 
@@ -97,26 +102,27 @@ const TrialExpiryWizard: FunctionComponent<TrialExpiryWizardPropsInterface> = (
         >
             <DialogTitle component="div">
                 <Typography variant="h5">
-                    { t(titleKey, { tierName }) }
+                    { stepContent?.title }
                 </Typography>
                 <Typography variant="body1" color="text.secondary" sx={ { mt: 0.75 } }>
-                    { t(subtitleKey, { tierName }) }
+                    { stepContent?.subtitle }
                 </Typography>
             </DialogTitle>
 
             { isUpgradeStep
                 ? (
                     <TrialExpiryUpgradeStep
+                        content={ upgradeContent }
                         data-componentid={ `${ componentId }-upgrade-step` }
                         onPrevious={ goToPreviousStep }
                         onStayOnFree={ closeWizard }
                         pricingUrl={ pricingUrl }
-                        tierName={ tierName }
                         upgradeUrl={ upgradeUrl }
                     />
                 )
                 : (
                     <TrialExpiryChangesStep
+                        content={ changesContent }
                         data-componentid={ `${ componentId }-changes-step` }
                         onClose={ closeWizard }
                         onNext={ goToNextStep }

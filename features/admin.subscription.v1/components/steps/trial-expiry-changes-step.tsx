@@ -22,12 +22,15 @@ import DialogActions from "@oxygen-ui/react/DialogActions";
 import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
+import { Icon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ComponentType, FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { TRIAL_EXPIRY_SUMMARY_CARDS, TrialExpiryComponentIds } from "../../constants";
 import {
     TrialExpiryCardVariant,
+    TrialExpiryChangesContentInterface,
+    TrialExpirySummaryCardContentInterface,
     TrialExpirySummaryCardInterface
 } from "../../models/trial-expiry";
 import {
@@ -38,6 +41,10 @@ import {
 } from "../shared/trial-expiry-wizard-styles";
 
 interface TrialExpiryChangesStepPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Configured copy of the step.
+     */
+    content: TrialExpiryChangesContentInterface;
     /**
      * Closes the wizard without viewing the upgrade offer.
      */
@@ -59,6 +66,7 @@ const TrialExpiryChangesStep: FunctionComponent<TrialExpiryChangesStepPropsInter
     props: TrialExpiryChangesStepPropsInterface
 ): ReactElement => {
     const {
+        content,
         ["data-componentid"]: componentId = TrialExpiryComponentIds.CHANGES_STEP,
         onClose,
         onNext
@@ -71,7 +79,13 @@ const TrialExpiryChangesStep: FunctionComponent<TrialExpiryChangesStepPropsInter
             <TrialExpiryStepContent dividers data-componentid={ componentId }>
                 <Grid container spacing={ 3 }>
                     { TRIAL_EXPIRY_SUMMARY_CARDS.map((card: TrialExpirySummaryCardInterface) => {
-                        const CardIcon: ComponentType<{ size?: number }> = card.icon;
+                        const CardIcon: Icon = card.icon;
+                        const cardContent: TrialExpirySummaryCardContentInterface =
+                            card.resolveContent(content);
+
+                        if (!cardContent) {
+                            return null;
+                        }
 
                         return (
                             <Grid key={ card.key } xs={ 12 } md={ 4 }>
@@ -90,43 +104,43 @@ const TrialExpiryChangesStep: FunctionComponent<TrialExpiryChangesStepPropsInter
                                             <CardIcon size={ 20 } />
                                         </TrialExpiryIconTile>
                                         <Typography variant="h6">
-                                            { t(card.titleKey) }
+                                            { cardContent.title }
                                         </Typography>
                                     </Stack>
 
                                     { /* Kept in their own tighter stack so the lead-in line sits
                                           closer to its list than the card's own gap allows. */ }
                                     <Stack spacing={ 1 }>
-                                        { card.descriptionKey && (
+                                        { cardContent.description && (
                                             <Typography variant="body2" color="text.secondary">
-                                                { t(card.descriptionKey) }
+                                                { cardContent.description }
                                             </Typography>
                                         ) }
 
                                         { card.variant === TrialExpiryCardVariant.LIST
                                             ? (
                                                 <TrialExpiryItemList component="ul">
-                                                    { card.itemKeys.map((itemKey: string) => (
+                                                    { cardContent.items?.map((item: string) => (
                                                         <Typography
-                                                            key={ itemKey }
+                                                            key={ item }
                                                             component="li"
                                                             variant="body2"
                                                             color="text.secondary"
                                                         >
-                                                            { t(itemKey) }
+                                                            { item }
                                                         </Typography>
                                                     )) }
                                                 </TrialExpiryItemList>
                                             )
                                             : (
                                                 <Stack spacing={ 2 }>
-                                                    { card.itemKeys.map((itemKey: string) => (
+                                                    { cardContent.items?.map((item: string) => (
                                                         <Typography
-                                                            key={ itemKey }
+                                                            key={ item }
                                                             variant="body2"
                                                             color="text.secondary"
                                                         >
-                                                            { t(itemKey) }
+                                                            { item }
                                                         </Typography>
                                                     )) }
                                                 </Stack>

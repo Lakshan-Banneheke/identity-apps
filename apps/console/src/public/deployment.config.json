@@ -251,6 +251,59 @@
         ],
         "trial": {
             "enabled": false,
+            "expiryNotice": {
+                "changes": {
+                    "nothingDeleted": {
+                        "items": [
+                            "Your configurations and data are preserved, so everything is available the moment you upgrade.",
+                            "You can continue on the free plan and upgrade anytime.",
+                            "Your resources are disabled unless you upgrade or reduce to the free limits."
+                        ],
+                        "title": "Nothing is deleted"
+                    },
+                    "nowDisabled": {
+                        "description": "If you had configured the following resources beyond the free tier limits, they are disabled.",
+                        "items": [
+                            "Applications",
+                            "Organizations",
+                            "Enterprise connections",
+                            "Pre-flow extensions (Actions)",
+                            "Webhooks",
+                            "Remote userstores"
+                        ],
+                        "title": "What's now disabled"
+                    },
+                    "staysOnFree": {
+                        "items": [
+                            "15,000 monthly users",
+                            "5,000 M2M tokens",
+                            "2,500 AgentID tokens",
+                            "5 applications",
+                            "1 organization",
+                            "1 social login"
+                        ],
+                        "title": "What stays on free"
+                    },
+                    "subtitle": "Your account has moved to the free plan. Here's what changes:",
+                    "title": "Your 30-day Paid trial has ended"
+                },
+                "upgrade": {
+                    "offer": {
+                        "features": [
+                            "3,500 monthly active users",
+                            "5,000 AgentID tokens",
+                            "Enterprise SSO Connections",
+                            "10,000 M2M tokens",
+                            "Unlimited applications",
+                            "Custom domains and custom SMS templates"
+                        ],
+                        "pricing": "Starts at just $25 per month.",
+                        "title": "PYG Plan"
+                    },
+                    "subtitle": "Upgrade to keep all the features and resources limits or continue on free.",
+                    "title": "Upgrade to the PYG Plan"
+                }
+            },
             "tierName": "Paid"
         }
     },

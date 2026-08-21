@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ComponentType } from "react";
+import { Icon } from "@oxygen-ui/react-icons";
 
 /**
  * Steps of the trial expiry wizard.
@@ -39,21 +39,80 @@ export enum TrialExpiryCardVariant {
  */
 export type TrialExpiryCardTone = "success" | "warning" | "info";
 
+/**
+ * Configured content of a single summary card on the first step.
+ */
+export interface TrialExpirySummaryCardContentInterface {
+    /**
+     * Lead-in paragraph rendered above the items, if the card has one.
+     */
+    description?: string;
+    /**
+     * The card's list items or paragraphs, in display order. Which of the two they render as is
+     * decided by the card's variant, not by the configuration.
+     */
+    items: string[];
+    title: string;
+}
+
+/**
+ * Configured content of the changes summary step.
+ */
+export interface TrialExpiryChangesContentInterface {
+    nothingDeleted: TrialExpirySummaryCardContentInterface;
+    nowDisabled: TrialExpirySummaryCardContentInterface;
+    staysOnFree: TrialExpirySummaryCardContentInterface;
+    subtitle: string;
+    title: string;
+}
+
+/**
+ * Configured content of the paid tier offer panel on the second step.
+ */
+export interface TrialExpiryOfferContentInterface {
+    /**
+     * Tier highlights listed with a check mark. Code splits them across the panel's columns.
+     */
+    features: string[];
+    pricing: string;
+    title: string;
+}
+
+/**
+ * Configured content of the upgrade offer step.
+ */
+export interface TrialExpiryUpgradeContentInterface {
+    offer: TrialExpiryOfferContentInterface;
+    subtitle: string;
+    title: string;
+}
+
+/**
+ * Copy of the trial expiry wizard, read from the trial extension of the deployment config. Every
+ * tier specific string, including the tier names themselves, is authored here rather than derived,
+ * so a deployment can offer any tier without a code change.
+ */
+export interface TrialExpiryContentInterface {
+    changes: TrialExpiryChangesContentInterface;
+    upgrade: TrialExpiryUpgradeContentInterface;
+}
+
+/**
+ * Layout of one of the summary cards on the first step. Holds only the parts that are fixed by the
+ * design, and picks up its copy from the configured content.
+ */
 export interface TrialExpirySummaryCardInterface {
-    /**
-     * i18n key of the lead-in paragraph rendered above the items, if the card has one.
-     */
-    descriptionKey?: string;
-    icon: ComponentType<{ size?: number }>;
-    /**
-     * i18n keys of the card's list items or paragraphs, in display order.
-     */
-    itemKeys: string[];
+    icon: Icon;
     /**
      * Identifies the card in React keys and component IDs.
      */
     key: string;
-    titleKey: string;
+    /**
+     * Picks the card's copy out of the configured content of the step.
+     */
+    resolveContent: (
+        content: TrialExpiryChangesContentInterface
+    ) => TrialExpirySummaryCardContentInterface;
     tone: TrialExpiryCardTone;
     variant: TrialExpiryCardVariant;
 }

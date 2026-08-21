@@ -460,60 +460,10 @@ export const console: ConsoleNS = {
                 previous: "Previous",
                 stayOnFree: "Stay on free"
             },
-            changes: {
-                title: "Your 30-day {{tierName}} trial has ended",
-                subtitle: "Your account has moved to the free plan. Here's what changes:",
-                staysOnFree: {
-                    title: "What stays on free",
-                    items: {
-                        monthlyUsers: "15,000 monthly users",
-                        m2mTokens: "5,000 M2M tokens",
-                        agentIdTokens: "2,500 AgentID tokens",
-                        applications: "5 applications",
-                        organizations: "1 organization",
-                        socialLogin: "1 social login"
-                    }
-                },
-                nowDisabled: {
-                    title: "What's now disabled",
-                    description: "If you had configured the following resources beyond the free tier " +
-                        "limits, they are disabled.",
-                    items: {
-                        applications: "Applications",
-                        organizations: "Organizations",
-                        enterpriseConnections: "Enterprise connections",
-                        preFlowExtensions: "Pre-flow extensions (Actions)",
-                        webhooks: "Webhooks",
-                        remoteUserstores: "Remote userstores"
-                    }
-                },
-                nothingDeleted: {
-                    title: "Nothing is deleted",
-                    items: {
-                        dataPreserved: "Your configurations and data are preserved, so everything is " +
-                            "available the moment you upgrade.",
-                        continueAnytime: "You can continue on the free plan and upgrade anytime.",
-                        resourcesStayDisabled: "Your resources are disabled unless you upgrade or " +
-                            "reduce to the free limits."
-                    }
-                }
-            },
             upgrade: {
-                title: "Upgrade to the {{tierName}} Plan",
-                subtitle: "Upgrade to keep all the features and resources limits or continue on free.",
                 offer: {
-                    title: "{{tierName}} Plan",
-                    pricing: "Starts at just $25 per month.",
                     action: "Continue to upgrade",
-                    viewPlansAction: "View plans",
-                    features: {
-                        monthlyActiveUsers: "3,500 monthly active users",
-                        agentIdTokens: "5,000 AgentID tokens",
-                        enterpriseSso: "Enterprise SSO Connections",
-                        m2mTokens: "10,000 M2M tokens",
-                        unlimitedApplications: "Unlimited applications",
-                        customDomains: "Custom domains and custom SMS templates"
-                    }
+                    viewPlansAction: "View plans"
                 }
             }
         },

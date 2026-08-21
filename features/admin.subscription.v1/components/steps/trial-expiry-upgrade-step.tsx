@@ -24,9 +24,14 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { ArrowLeftIcon, ArrowUpRightFromSquareIcon, CheckIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useCallback } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { TRIAL_EXPIRY_UPGRADE_FEATURE_COLUMNS, TrialExpiryComponentIds } from "../../constants";
+import {
+    TRIAL_EXPIRY_UPGRADE_FEATURE_COLUMN_COUNT,
+    TrialExpiryComponentIds
+} from "../../constants";
+import { TrialExpiryUpgradeContentInterface } from "../../models/trial-expiry";
+import { splitIntoColumns } from "../../utils/split-into-columns";
 import {
     TrialExpiryFeatureCheck,
     TrialExpiryOfferPanel,
@@ -34,6 +39,10 @@ import {
 } from "../shared/trial-expiry-wizard-styles";
 
 interface TrialExpiryUpgradeStepPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Configured copy of the step, including the offered tier and its highlights.
+     */
+    content: TrialExpiryUpgradeContentInterface;
     /**
      * Returns the wizard to the changes summary step.
      */
@@ -46,10 +55,6 @@ interface TrialExpiryUpgradeStepPropsInterface extends IdentifiableComponentInte
      * Public pricing page, opened by the "View Plans" action.
      */
     pricingUrl: string;
-    /**
-     * Name of the tier being offered, e.g. "Growth".
-     */
-    tierName: string;
     /**
      * Destination opened by the upgrade call to action.
      */
@@ -67,15 +72,21 @@ const TrialExpiryUpgradeStep: FunctionComponent<TrialExpiryUpgradeStepPropsInter
     props: TrialExpiryUpgradeStepPropsInterface
 ): ReactElement => {
     const {
+        content,
         ["data-componentid"]: componentId = TrialExpiryComponentIds.UPGRADE_STEP,
         onPrevious,
         onStayOnFree,
         pricingUrl,
-        tierName,
         upgradeUrl
     } = props;
 
     const { t } = useTranslation();
+
+    const featureColumns: string[][] = useMemo(
+        (): string[][] =>
+            splitIntoColumns(content?.offer?.features, TRIAL_EXPIRY_UPGRADE_FEATURE_COLUMN_COUNT),
+        [ content ]
+    );
 
     const handleUpgrade: () => void = useCallback((): void => {
         window.open(upgradeUrl, "_blank", "noopener,noreferrer");
@@ -86,10 +97,10 @@ const TrialExpiryUpgradeStep: FunctionComponent<TrialExpiryUpgradeStepPropsInter
             <TrialExpiryStepContent dividers data-componentid={ componentId }>
                 <TrialExpiryOfferPanel elevation={ 0 } data-componentid={ `${ componentId }-offer-panel` }>
                     <Typography variant="h6">
-                        { t("console:common.trialExpiry.upgrade.offer.title", { tierName }) }
+                        { content?.offer?.title }
                     </Typography>
                     <Typography variant="body1" color="text.secondary" sx={ { mb: 3, mt: 0.5 } }>
-                        { t("console:common.trialExpiry.upgrade.offer.pricing") }{ " " }
+                        { content?.offer?.pricing }{ " " }
                         <Link
                             data-componentid={ `${ componentId }-view-plans-link` }
                             href={ pricingUrl }
@@ -107,16 +118,16 @@ const TrialExpiryUpgradeStep: FunctionComponent<TrialExpiryUpgradeStepPropsInter
                     </Typography>
 
                     <Grid container spacing={ 2 }>
-                        { TRIAL_EXPIRY_UPGRADE_FEATURE_COLUMNS.map((column: string[]) => (
+                        { featureColumns.map((column: string[]) => (
                             <Grid key={ column[0] } xs={ 12 } sm={ 6 }>
                                 <Stack spacing={ 1.5 }>
-                                    { column.map((featureKey: string) => (
-                                        <Stack key={ featureKey } direction="row" spacing={ 1.5 }>
+                                    { column.map((feature: string) => (
+                                        <Stack key={ feature } direction="row" spacing={ 1.5 }>
                                             <TrialExpiryFeatureCheck>
                                                 <CheckIcon size={ 14 } />
                                             </TrialExpiryFeatureCheck>
                                             <Typography variant="body1">
-                                                { t(featureKey) }
+                                                { feature }
                                             </Typography>
                                         </Stack>
                                     )) }
